@@ -5,6 +5,11 @@
 //  Created by Joowon Jang on 12/12/24.
 //
 
+/*
+ TODO
+ 1. requirement for email form and pw
+ */
+
 import UIKit
 
 class LoginViewController: UIViewController {
@@ -50,7 +55,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupNotifications()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         
         view.addSubview(titleLabel)
         view.addSubview(emailField)
@@ -61,11 +67,20 @@ class LoginViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         
+        let globeItem = UIBarButtonItem(
+            image: UIImage(systemName: "globe"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapChangeLanguage)
+        )
+        navigationItem.rightBarButtonItem = globeItem
+        
         updateText()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         let padding: CGFloat = 20
         let fieldHeight: CGFloat = 44
         
@@ -95,24 +110,22 @@ class LoginViewController: UIViewController {
                                     height: fieldHeight)
     }
     
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
-    }
-    
     @objc private func updateText() {
-        title = LanguageManager.shared.string(forKey: "login_title")
-        titleLabel.text = LanguageManager.shared.string(forKey: "welcome_message")
-        emailField.placeholder = LanguageManager.shared.string(forKey: "email_placeholder")
-        passwordField.placeholder = LanguageManager.shared.string(forKey: "password_placeholder")
-        loginButton.setTitle(LanguageManager.shared.string(forKey: "login_title"), for: .normal)
-        signUpButton.setTitle(LanguageManager.shared.string(forKey: "sign_up_button"), for: .normal)
+        let lm = LanguageManager.shared
+        title = lm.string(forKey: "login_title")
+        titleLabel.text = lm.string(forKey: "welcome_message")
+        emailField.placeholder = lm.string(forKey: "email_placeholder")
+        passwordField.placeholder = lm.string(forKey: "password_placeholder")
+        loginButton.setTitle(lm.string(forKey: "login_title"), for: .normal)
+        signUpButton.setTitle(lm.string(forKey: "sign_up_button"), for: .normal)
     }
     
     @objc private func didTapLogin() {
+        let lm = LanguageManager.shared
         guard let email = emailField.text, !email.isEmpty,
               let password = passwordField.text, !password.isEmpty else {
-            showAlert(title: LanguageManager.shared.string(forKey: "error_title"),
-                      message: LanguageManager.shared.string(forKey: "empty_fields_error"))
+            showAlert(title: lm.string(forKey: "error_title"),
+                      message: lm.string(forKey: "empty_fields_error"))
             return
         }
         
@@ -130,16 +143,17 @@ class LoginViewController: UIViewController {
     }
     
     private func showLoginErrorAlert() {
-        let alert = UIAlertController(title: LanguageManager.shared.string(forKey: "login_error_title"),
-                                      message: LanguageManager.shared.string(forKey: "login_error_message"),
+        let lm = LanguageManager.shared
+        let alert = UIAlertController(title: lm.string(forKey: "login_error_title"),
+                                      message: lm.string(forKey: "login_error_message"),
                                       preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: LanguageManager.shared.string(forKey: "forgot_id_password"), style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: lm.string(forKey: "forgot_id_password"), style: .default, handler: { [weak self] _ in
             let vc = ForgotIDPasswordViewController()
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .formSheet
             self?.present(nav, animated: true)
         }))
-        alert.addAction(UIAlertAction(title: LanguageManager.shared.string(forKey: "join_us"), style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: lm.string(forKey: "join_us"), style: .default, handler: { [weak self] _ in
             self?.didTapSignUp()
         }))
         alert.addAction(UIAlertAction(title: "OK", style: .cancel))
@@ -162,5 +176,10 @@ class LoginViewController: UIViewController {
             self?.present(tabBarVC, animated: true)
         }
         navigationController?.pushViewController(signUpVC, animated: true)
+    }
+    
+    @objc private func didTapChangeLanguage() {
+        // Show language selection action sheet
+        presentLanguageSelection(from: self)
     }
 }

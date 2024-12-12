@@ -1,6 +1,6 @@
 //
 //  SignUpViewController.swift
-//  Why-Cook_In (외쿸인)
+//  Why-Cook_In (외쿸인)
 //
 //  Created by Joowon Jang on 12/12/24.
 //
@@ -14,14 +14,14 @@ class SignUpViewController: UIViewController {
     private let realNameField: UITextField = {
         let field = UITextField()
         field.borderStyle = .roundedRect
-        field.placeholder = NSLocalizedString("real_name_placeholder", comment: "")
+        field.autocapitalizationType = .none
         return field
     }()
     
     private let userIDField: UITextField = {
         let field = UITextField()
         field.borderStyle = .roundedRect
-        field.placeholder = NSLocalizedString("user_id_placeholder", comment: "")
+        field.autocapitalizationType = .none
         return field
     }()
     
@@ -30,7 +30,6 @@ class SignUpViewController: UIViewController {
         field.borderStyle = .roundedRect
         field.autocapitalizationType = .none
         field.keyboardType = .emailAddress
-        field.placeholder = NSLocalizedString("email_placeholder", comment: "")
         return field
     }()
     
@@ -39,7 +38,6 @@ class SignUpViewController: UIViewController {
         field.borderStyle = .roundedRect
         field.isSecureTextEntry = true
         field.autocapitalizationType = .none
-        field.placeholder = NSLocalizedString("password_placeholder", comment: "")
         return field
     }()
     
@@ -49,7 +47,6 @@ class SignUpViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.tintColor = .white
         button.setTitleColor(.white, for: .normal)
-        button.setTitle(NSLocalizedString("sign_up_button", comment: ""), for: .normal)
         return button
     }()
     
@@ -58,7 +55,8 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = NSLocalizedString("sign_up_title", comment: "")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         
         view.addSubview(realNameField)
         view.addSubview(userIDField)
@@ -67,6 +65,18 @@ class SignUpViewController: UIViewController {
         view.addSubview(signUpButton)
         
         signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
+        
+        updateText()
+    }
+    
+    @objc private func updateText() {
+        let lm = LanguageManager.shared
+        title = lm.string(forKey: "sign_up_title")
+        realNameField.placeholder = lm.string(forKey: "real_name_placeholder")
+        userIDField.placeholder = lm.string(forKey: "user_id_placeholder")
+        emailField.placeholder = lm.string(forKey: "email_placeholder")
+        passwordField.placeholder = lm.string(forKey: "password_placeholder")
+        signUpButton.setTitle(lm.string(forKey: "sign_up_button"), for: .normal)
     }
     
     override func viewDidLayoutSubviews() {
@@ -101,13 +111,14 @@ class SignUpViewController: UIViewController {
     }
     
     @objc private func didTapSignUp() {
+        let lm = LanguageManager.shared
         guard let realName = realNameField.text, !realName.isEmpty,
               let userID = userIDField.text, !userID.isEmpty,
               let email = emailField.text, !email.isEmpty,
               let password = passwordField.text, !password.isEmpty else {
             // Show alert for empty fields
-            let alert = UIAlertController(title: NSLocalizedString("error_title", comment: ""),
-                                          message: NSLocalizedString("empty_fields_error", comment: ""),
+            let alert = UIAlertController(title: lm.string(forKey: "error_title"),
+                                          message: lm.string(forKey: "empty_fields_error"),
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
@@ -120,8 +131,8 @@ class SignUpViewController: UIViewController {
                     self?.completion?()
                 } else {
                     // Show sign up error
-                    let alert = UIAlertController(title: NSLocalizedString("error_title", comment: ""),
-                                                  message: NSLocalizedString("login_error_message", comment: ""),
+                    let alert = UIAlertController(title: lm.string(forKey: "error_title"),
+                                                  message: lm.string(forKey: "login_error_message"),
                                                   preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default))
                     self?.present(alert, animated: true)

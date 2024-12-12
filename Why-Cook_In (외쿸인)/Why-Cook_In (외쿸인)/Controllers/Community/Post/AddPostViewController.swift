@@ -15,7 +15,6 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     // Category label
     private let categoryLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("category_label", comment: "")
         label.textAlignment = .left
         return label
     }()
@@ -30,24 +29,23 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     private let titleField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = NSLocalizedString("post_title_placeholder", comment: "")
         tf.borderStyle = .roundedRect
         return tf
     }()
     
     private let categoryPicker = UIPickerView()
     private var categories: [String] = []
+    
     private let addCategoryButton: UIButton = {
         let btn = UIButton(type: .system)
-        btn.setTitle(NSLocalizedString("add_category_button", comment: ""), for: .normal)
         btn.backgroundColor = .systemBlue
         btn.setTitleColor(.white, for: .normal)
         btn.layer.cornerRadius = 8
         return btn
     }()
+    
     private let newCategoryField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = NSLocalizedString("new_category_placeholder", comment: "")
         tf.borderStyle = .roundedRect
         return tf
     }()
@@ -62,17 +60,14 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }()
     
     private let saveButton: UIBarButtonItem = {
-        UIBarButtonItem(
-            title: NSLocalizedString("save_button", comment: ""),
-            style: .done,
-            target: nil,
-            action: nil)
+        UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = NSLocalizedString("add_post_title", comment: "")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         
         view.addSubview(titleField)
         view.addSubview(categoryLabel)
@@ -95,6 +90,18 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         // Initially hide newCategoryField and addCategoryButton
         newCategoryField.isHidden = true
         addCategoryButton.isHidden = true
+        
+        updateText()
+    }
+    
+    @objc private func updateText() {
+        let lm = LanguageManager.shared
+        title = lm.string(forKey: "add_post_title")
+        titleField.placeholder = lm.string(forKey: "post_title_placeholder")
+        categoryLabel.text = lm.string(forKey: "category_label")
+        addCategoryButton.setTitle(lm.string(forKey: "add_category_button"), for: .normal)
+        newCategoryField.placeholder = lm.string(forKey: "new_category_placeholder")
+        saveButton.title = lm.string(forKey: "save_button")
     }
     
     override func viewDidLayoutSubviews() {
@@ -141,6 +148,7 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     @objc private func didTapSave() {
+        let lm = LanguageManager.shared
         guard let currentUser = AuthenticationService.shared.getCurrentUser() else {
             dismiss(animated: true)
             return
@@ -148,8 +156,8 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         guard let title = titleField.text, !title.isEmpty else {
             // Show alert: no title
-            let alert = UIAlertController(title: NSLocalizedString("error_title", comment: ""),
-                                          message: NSLocalizedString("empty_fields_error", comment: ""),
+            let alert = UIAlertController(title: lm.string(forKey: "error_title"),
+                                          message: lm.string(forKey: "empty_fields_error"),
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
@@ -164,7 +172,7 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         if selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.count {
             category = categories[selectedCategoryIndex]
         } else {
-            category = "General"
+            category = "category_general"
         }
         
         viewModel.addPost(title: title, content: content, category: category, author: currentUser)
@@ -181,12 +189,13 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func pickerView(_ pickerView: UIPickerView,
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
-        return categories[row]
+        let categoryKey = categories[row]
+        return LanguageManager.shared.string(forKey: categoryKey)
     }
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let chosen = categories[row]
-        // If chosen is "주원에게 새로운 범주 건의하기", show newCategoryField and addCategoryButton
-        if chosen == "주원에게 새로운 범주 건의하기" {
+        let categoryKey = categories[row]
+        if categoryKey == "category_suggest_new" {
             newCategoryField.isHidden = false
             addCategoryButton.isHidden = false
         } else {
@@ -194,4 +203,5 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
             addCategoryButton.isHidden = true
         }
     }
+
 }

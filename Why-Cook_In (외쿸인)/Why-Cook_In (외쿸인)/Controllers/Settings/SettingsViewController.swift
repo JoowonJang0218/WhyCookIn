@@ -10,15 +10,16 @@ import UIKit
 class SettingsViewController: UIViewController {
     private let authService = AuthenticationService.shared
     
-    private let languageSwitch: UISegmentedControl = {
-        let seg = UISegmentedControl(items: ["English", "한국어"])
-        seg.selectedSegmentIndex = (LanguageManager.shared.currentLanguage == .english) ? 0 : 1
-        return seg
+    private let languageButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemBlue
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 8
+        return button
     }()
     
     private let logoutButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LanguageManager.shared.string(forKey: "logout_button"), for: .normal)
         button.backgroundColor = .systemRed
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
@@ -27,7 +28,6 @@ class SettingsViewController: UIViewController {
     
     private let deleteAccountButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(LanguageManager.shared.string(forKey: "delete_account_button"), for: .normal)
         button.backgroundColor = .systemOrange
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
@@ -37,30 +37,33 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = LanguageManager.shared.string(forKey: "settings_title")
         
-        view.addSubview(languageSwitch)
+        // Observe language changes
+        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
+        
+        view.addSubview(languageButton)
         view.addSubview(logoutButton)
         view.addSubview(deleteAccountButton)
         
-        languageSwitch.addTarget(self, action: #selector(didChangeLanguage), for: .valueChanged)
+        languageButton.addTarget(self, action: #selector(didTapChangeLanguage), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
         deleteAccountButton.addTarget(self, action: #selector(didTapDeleteAccount), for: .touchUpInside)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
+        updateText()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         let padding: CGFloat = 20
-        languageSwitch.frame = CGRect(x: padding,
+        
+        languageButton.frame = CGRect(x: padding,
                                       y: view.safeAreaInsets.top + 100,
                                       width: view.frame.size.width - padding*2,
                                       height: 44)
         
         logoutButton.frame = CGRect(x: padding,
-                                    y: languageSwitch.frame.maxY + 40,
+                                    y: languageButton.frame.maxY + 20,
                                     width: view.frame.size.width - padding*2,
                                     height: 44)
         
@@ -71,14 +74,15 @@ class SettingsViewController: UIViewController {
     }
     
     @objc private func updateText() {
-        title = LanguageManager.shared.string(forKey: "settings_title")
-        logoutButton.setTitle(LanguageManager.shared.string(forKey: "logout_button"), for: .normal)
-        deleteAccountButton.setTitle(LanguageManager.shared.string(forKey: "delete_account_button"), for: .normal)
+        let lm = LanguageManager.shared
+        title = lm.string(forKey: "settings_title")
+        languageButton.setTitle(lm.string(forKey: "language_button"), for: .normal)
+        logoutButton.setTitle(lm.string(forKey: "logout_button"), for: .normal)
+        deleteAccountButton.setTitle(lm.string(forKey: "delete_account_button"), for: .normal)
     }
     
-    @objc private func didChangeLanguage() {
-        let selectedLang: AppLanguage = (languageSwitch.selectedSegmentIndex == 0) ? .english : .korean
-        LanguageManager.shared.setLanguage(selectedLang)
+    @objc private func didTapChangeLanguage() {
+        presentLanguageSelection(from: self)
     }
     
     @objc private func didTapLogout() {

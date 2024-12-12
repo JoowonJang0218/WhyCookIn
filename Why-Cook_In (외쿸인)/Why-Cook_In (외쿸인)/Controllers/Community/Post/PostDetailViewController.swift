@@ -5,6 +5,12 @@
 //  Created by Joowon Jang on 12/12/24.
 //
 
+/*
+ THINGS TO WORK ON
+ 
+ also for profiledetails, Once the profile is set, there shouldn't be a back button. whenever the user clicks the profile tab, it should just display the profile detail and that should be it. There should be an extra button on the top right as an "edit" button. and also, when the user clicks the profile picture it should able the user to edit the profile photo. 
+ */
+
 import UIKit
 
 class PostDetailViewController: UIViewController {

@@ -1,6 +1,6 @@
 //
 //  DatabaseManager.swift
-//  Why-Cook_In (외쿸인)
+//  Why-Cook_In (외쿸인)
 //
 //  Created by Joowon Jang on 12/12/24.
 //
@@ -23,23 +23,23 @@ class DatabaseManager {
     
     private var users = [String: (password: String, user: User)]()
     private var posts = [Post]()
-    private var categories = ["General", "Housing", "Immigration", "Jobs", "주원에게 새로운 범주 건의하기"]
+    private var categories = [
+        "category_general",
+        "category_housing",
+        "category_immigration",
+        "category_jobs",
+        "category_suggest_new"
+    ]
     private var userProfiles: [String: UserProfile] = [:]
     
     private init() {}
     
-    // User-related methods unchanged
+    // User-related methods
     func addUser(email: String, password: String, name: String, userID: String) -> Bool {
         guard users[email] == nil else { return false }
         let newUser = User(id: UUID(), name: name, email: email, userID: userID)
         users[email] = (password, newUser)
         return true
-    }
-    
-    func updateUserProfile(user: User, nationality: String, age: Int, sex: String, ethnicity: String, homeCountry: String, childhoodCountry: String, photo: UIImage?) {
-        // For simplicity, just store this in memory. Real-world would save to database.
-        // We'll just print or store in a dictionary. Let's store in a profile dictionary keyed by user ID.
-        userProfiles[user.email] = UserProfile(nationality: nationality, age: age, sex: sex, ethnicity: ethnicity, homeCountry: homeCountry, childhoodCountry: childhoodCountry, photo: photo)
     }
     
     func verifyUser(email: String, password: String) -> Bool {
@@ -49,6 +49,28 @@ class DatabaseManager {
     
     func fetchUser(email: String) -> User? {
         return users[email]?.user
+    }
+    
+    // Profile methods
+    func updateUserProfile(user: User,
+                           nationality: String,
+                           age: Int,
+                           sex: String,
+                           ethnicity: String,
+                           homeCountry: String,
+                           childhoodCountry: String,
+                           photo: UIImage?) {
+        userProfiles[user.email] = UserProfile(nationality: nationality,
+                                               age: age,
+                                               sex: sex,
+                                               ethnicity: ethnicity,
+                                               homeCountry: homeCountry,
+                                               childhoodCountry: childhoodCountry,
+                                               photo: photo)
+    }
+    
+    func getUserProfile(user: User) -> UserProfile? {
+        return userProfiles[user.email]
     }
     
     // Post-related methods
