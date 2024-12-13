@@ -3,6 +3,12 @@
 //  Why-Cook_In (외쿸인)
 //
 
+/*
+ TODO
+    1. Restaurant finding (HALAL/VEGAN/VEGGIE/ or any religtious shit options
+    2. BANK ACCOUNT opening up
+ */
+
 import UIKit
 
 class CommunityViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {

@@ -8,7 +8,10 @@
 /*
  THINGS TO WORK ON
  
- also for profiledetails, Once the profile is set, there shouldn't be a back button. whenever the user clicks the profile tab, it should just display the profile detail and that should be it. There should be an extra button on the top right as an "edit" button. and also, when the user clicks the profile picture it should able the user to edit the profile photo. 
+ 1. also for profiledetails, Once the profile is set, there shouldn't be a back button. whenever the user clicks the profile tab, it should just display the profile detail and that should be it. There should be an extra button on the top right as an "edit" button. and also, when the user clicks the profile picture it should able the user to edit the profile photo.
+ 
+ 2. After the profile is finished entering, move on to swiping&matching with the users nearby
+    !!! let the user decide the detail of what they want
  */
 
 import UIKit
