@@ -9,16 +9,7 @@ import Foundation
 
 class CommunityViewModel {
     func fetchPosts(completion: @escaping ([Post]) -> Void) {
-        var posts = DatabaseManager.shared.fetchPosts()
-        // Insert AI bot post
-        if posts.count > 0 {
-            let lm = LanguageManager.shared
-            let jokes = [lm.string(forKey: "ai_joke_1"), lm.string(forKey: "ai_joke_2")]
-            let joke = jokes.randomElement() ?? lm.string(forKey: "ai_joke_1")
-            let botUser = User(id: UUID(), name: "AI Bot", email: "bot@why-cook-in.com", userID: "aibot")
-            let botPost = Post(id: UUID(), author: botUser, title: "AI Bot", content: joke, category: "category_general", timestamp: Date())
-            posts.insert(botPost, at: 0)
-        }
+        let posts = DatabaseManager.shared.fetchPosts()
         completion(posts)
     }
 
@@ -26,5 +17,8 @@ class CommunityViewModel {
         let post = Post(id: UUID(), author: author, title: title, content: content, category: category, timestamp: Date())
         DatabaseManager.shared.savePost(post)
     }
-}
 
+    func empathizePost(_ post: Post, by user: User) {
+        DatabaseManager.shared.empathizePost(post, by: user)
+    }
+}

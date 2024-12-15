@@ -3,10 +3,6 @@
 //  Why-Cook_In (외쿸인)
 //
 
-/*
- TODO
- */
-
 import UIKit
 
 class CommunityViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -20,24 +16,26 @@ class CommunityViewController: UIViewController, UITableViewDataSource, UITableV
         return tv
     }()
     
+    private let currentUser: User = {
+        return AuthenticationService.shared.getCurrentUser()!
+    }()
+    
     init(viewModel: CommunityViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         self.tabBarItem = UITabBarItem(
             title: LanguageManager.shared.string(forKey: "community_title"),
             image: UIImage(systemName: "person.3.fill"),
             tag: 0
         )
-        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
             action: #selector(didTapAddPost))
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("CommunityViewController should be initialized with a view model")
-    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,22 +80,28 @@ class CommunityViewController: UIViewController, UITableViewDataSource, UITableV
         present(navVC, animated: true)
     }
     
-    // MARK: TableView
+    // MARK: TableView DataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
-    
-    func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = posts[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "\(post.author.userID) - [\(post.category)] \(post.title)"
+        let reactionCount = DatabaseManager.shared.getReactionsCount(for: post)
+        cell.textLabel?.text = "\(post.author.userID): \(post.title)    Reactions: \(reactionCount)"
+        cell.textLabel?.numberOfLines = 0
+        cell.accessoryView = nil
         return cell
     }
-    
+
+    // MARK: TableView Delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let post = posts[indexPath.row]
         let detailVC = PostDetailViewController(post: post)
         navigationController?.pushViewController(detailVC, animated: true)
     }
+
+    // Remove the duplicate didSelectRowAt if you had another one below
+    // Also remove the didTapEmpathize and didTapComment methods if they are no longer used in this screen.
 }

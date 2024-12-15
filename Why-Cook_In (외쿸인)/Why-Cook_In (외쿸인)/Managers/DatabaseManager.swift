@@ -40,6 +40,19 @@ class DatabaseManager {
     // For user visibility
     private var userVisibility: [String: Bool] = [:]
     
+    private var reactionsForPost: [UUID: Int] = [:]
+
+    func empathizePost(_ post: Post, by user: User) {
+        // Just increment a counter
+        let currentCount = reactionsForPost[post.id] ?? 0
+        reactionsForPost[post.id] = currentCount + 1
+    }
+
+    func getReactionsCount(for post: Post) -> Int {
+        return reactionsForPost[post.id] ?? 0
+    }
+
+    
     private init() {}
     
     // MARK: - User-related methods

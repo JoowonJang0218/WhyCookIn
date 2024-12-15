@@ -36,6 +36,14 @@ class ProfileDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
+        if profile == nil {
+            // No profile exists; force creation
+            let vc = ProfileViewController()
+            vc.isEditingProfile = false // initial creation
+            navigationController?.pushViewController(vc, animated: false)
+            return // Don’t load detail view until profile is created
+        }
+        
         navigationItem.hidesBackButton = true
         let editItem = UIBarButtonItem(title: LanguageManager.shared.string(forKey: "edit_button"),
                                        style: .plain,
@@ -51,6 +59,7 @@ class ProfileDetailViewController: UIViewController {
         displayProfileData()
         setupConstraints()
     }
+
     
     @objc private func updateText() {
         title = LanguageManager.shared.string(forKey: "profile_title")
