@@ -2,8 +2,6 @@
 //  LanguageManager.swift
 //  Why-Cook_In (외쿸인)
 //
-//  Created by Joowon Jang on 12/12/24.
-//
 
 import Foundation
 
@@ -32,16 +30,14 @@ class LanguageManager {
     private let languageKey = "AppLanguage"
     private(set) var currentLanguage: AppLanguage = .english
     
-    // MARK: - Loaded Lists from Files
     private(set) var nationalities: [String] = []
     private(set) var ethnicities: [String] = []
+    private(set) var countries: [String] = []
     
-    // MARK: - English Dictionary
-    // Organized by feature/category, then alphabetically by key:
-    private let enDictionary: [String: String] = {
+    private var enDictionary: [String: String] = {
         var dict = [String: String]()
         
-        // --- Authentication & Login ---
+        // Authentication & Login
         dict["email_placeholder"] = "Email"
         dict["empty_fields_error"] = "Please fill in all fields."
         dict["error_title"] = "Error"
@@ -51,12 +47,16 @@ class LanguageManager {
         dict["login_error_title"] = "Login Failed"
         dict["login_title"] = "Log In"
         dict["password_placeholder"] = "Password"
-        dict["real_name_placeholder"] = "Real Name"
         dict["sign_up_button"] = "Sign Up"
         dict["sign_up_title"] = "Sign Up"
         dict["user_id_placeholder"] = "User ID"
+        dict["invalid_credentials"] = "Invalid email or password format."
         
-        // --- Add Post / Community ---
+        // Replacing Real Name with First and Last Name
+        dict["first_name_placeholder"] = "First Name"
+        dict["last_name_placeholder"] = "Last Name"
+        
+        // Add Post / Community
         dict["add_category_button"] = "Add Category"
         dict["add_post_detail_view"] = "Post Details"
         dict["add_post_title"] = "Add Post"
@@ -66,12 +66,14 @@ class LanguageManager {
         dict["category_label"] = "Category"
         dict["category_general"] = "General"
         dict["category_suggest_new"] = "Suggest a new category"
+        dict["category_sim_card"] = "SIM Card"
+        dict["category_bank_account"] = "Bank Account"
         dict["comments_placeholder"] = "Comments (coming soon)"
         dict["new_category_placeholder"] = "Suggest a new category"
         dict["post_title_placeholder"] = "Title of the post"
         dict["save_button"] = "Save"
         
-        // --- Profile ---
+        // Profile
         dict["profile_age"] = "Age"
         dict["profile_childhood_country"] = "Childhood Country (Optional)"
         dict["profile_ethnicity"] = "Ethnicity (Optional)"
@@ -80,9 +82,15 @@ class LanguageManager {
         dict["profile_photo"] = "Add Photo"
         dict["profile_save"] = "Save"
         dict["profile_sex"] = "Sex"
-        dict["choose_option"] = "Choose Option";
+        dict["choose_option"] = "Choose Option"
         
-        // --- Settings ---
+        // Profile Detail & Actions
+        dict["edit_button"] = "Edit"
+        dict["swipe_match_button"] = "Swipe & Match"
+        dict["direct_messages_button"] = "Messages"
+        dict["visibility_toggle"] = "Visible to Others"
+        
+        // Settings
         dict["account_deleted_message"] = "Your account has been deleted."
         dict["account_deleted_title"] = "Account Deleted"
         dict["change_language_info"] = "To change the language, pick from the list."
@@ -91,23 +99,33 @@ class LanguageManager {
         dict["language_info_title"] = "Language"
         dict["logout_button"] = "Log Out"
         dict["settings_title"] = "Settings"
+        dict["privacy_button"] = "Privacy"
         
-        // --- General UI ---
+        // General UI
         dict["welcome_message"] = "Welcome!"
-        dict["email_placeholder"] = "Email"
         
-        // --- Tabs / Sections ---
+        // Tabs / Sections
         dict["community_title"] = "Community"
         dict["profile_title"] = "Profile"
+        
+        // Detailed signup errors
+        dict["email_requirements"] = "Email must be a valid format (e.g., contains '@' and '.')"
+        dict["password_requirements"] = "Password must be at least 8 characters, contain a digit."
+        dict["missing_required_fields"] = "Please fill in all required fields."
+        dict["picture_required"] = "A profile picture is required."
+        
+        // AI bot jokes/examples
+        dict["ai_joke_1"] = "AI Bot: Did you know that kimchi is basically spicy, fermented happiness?"
+        dict["ai_joke_2"] = "AI Bot: If language learning were easy, I'd be a K-pop idol by now!"
+        
         
         return dict
     }()
     
-    // MARK: - Korean Dictionary
-    private let koDictionary: [String: String] = {
+    private var koDictionary: [String: String] = {
         var dict = [String: String]()
         
-        // --- Authentication & Login ---
+        // Authentication & Login
         dict["email_placeholder"] = "이메일"
         dict["empty_fields_error"] = "빈칸을 모두 채워주세요."
         dict["error_title"] = "오류"
@@ -117,13 +135,16 @@ class LanguageManager {
         dict["login_error_title"] = "로그인 실패"
         dict["login_title"] = "로그인"
         dict["password_placeholder"] = "비밀번호"
-        dict["real_name_placeholder"] = "실명"
         dict["sign_up_button"] = "회원가입"
         dict["sign_up_title"] = "회원가입"
         dict["user_id_placeholder"] = "아이디"
+        dict["invalid_credentials"] = "이메일 또는 비밀번호 형식이 올바르지 않습니다."
         
+        // Replacing Real Name with First and Last Name
+        dict["first_name_placeholder"] = "이름"
+        dict["last_name_placeholder"] = "성"
         
-        // --- Add Post / Community ---
+        // Add Post / Community
         dict["add_category_button"] = "범주 추가"
         dict["add_post_detail_view"] = "게시글 상세"
         dict["add_post_title"] = "게시글 올리기"
@@ -133,12 +154,14 @@ class LanguageManager {
         dict["category_label"] = "범주"
         dict["category_general"] = "일반"
         dict["category_suggest_new"] = "주원에게 새로운 범주 건의하기"
+        dict["category_sim_card"] = "심카드"
+        dict["category_bank_account"] = "은행 계좌"
         dict["comments_placeholder"] = "댓글 (준비중)"
         dict["new_category_placeholder"] = "새로운 범주를 제안해주세요"
         dict["post_title_placeholder"] = "게시글 제목"
         dict["save_button"] = "저장"
         
-        // --- Profile ---
+        // Profile
         dict["profile_age"] = "나이"
         dict["profile_childhood_country"] = "어린시절 나라 (선택)"
         dict["profile_ethnicity"] = "민족 (선택)"
@@ -147,10 +170,15 @@ class LanguageManager {
         dict["profile_photo"] = "사진 추가"
         dict["profile_save"] = "저장"
         dict["profile_sex"] = "성별"
-        dict["choose_option"] = "옵션 선택";
-
+        dict["choose_option"] = "옵션 선택"
         
-        // --- Settings ---
+        // Profile Detail & Actions
+        dict["edit_button"] = "편집"
+        dict["swipe_match_button"] = "스와이프 & 매칭"
+        dict["direct_messages_button"] = "메시지"
+        dict["visibility_toggle"] = "다른 사용자에게 보이기"
+        
+        // Settings
         dict["account_deleted_message"] = "계정이 삭제되었습니다."
         dict["account_deleted_title"] = "계정 삭제됨"
         dict["change_language_info"] = "언어를 변경하려면 목록에서 선택하세요."
@@ -159,29 +187,39 @@ class LanguageManager {
         dict["language_info_title"] = "언어"
         dict["logout_button"] = "로그아웃"
         dict["settings_title"] = "설정"
+        dict["privacy_button"] = "개인정보"
         
-        // --- General UI ---
+        // General UI
         dict["welcome_message"] = "환영합니다!"
-        dict["email_placeholder"] = "이메일"
         
-        // --- Tabs / Sections ---
+        // Tabs / Sections
         dict["community_title"] = "커뮤니티"
         dict["profile_title"] = "프로필"
+        
+        // Detailed signup errors
+        dict["email_requirements"] = "이메일은 '@'와 '.'을 포함한 유효한 형식이어야 합니다."
+        dict["password_requirements"] = "비밀번호는 8자 이상이며 숫자를 포함해야 합니다."
+        dict["missing_required_fields"] = "필수 항목을 모두 채워주세요."
+        dict["picture_required"] = "프로필 사진이 필요합니다."
+        
+        // AI bot jokes/examples
+        dict["ai_joke_1"] = "AI 봇: 김치는 매콤하고 발효된 행복이란 걸 아시나요?"
+        dict["ai_joke_2"] = "AI 봇: 언어 배우기가 쉽다면 지금쯤 K-pop 아이돌이 됐을 겁니다!"
+        
         
         return dict
     }()
     
     private init() {
-        // Load saved language
         if let saved = UserDefaults.standard.string(forKey: languageKey), saved == "korean" {
             currentLanguage = .korean
         } else {
             currentLanguage = .english
         }
         
-        // Load lists from files
         nationalities = loadListFromFile(named: "nationalities")
         ethnicities = loadListFromFile(named: "ethnicities")
+        countries = loadListFromFile(named: "list-of-countries")
     }
     
     func setLanguage(_ lang: AppLanguage) {
@@ -203,7 +241,6 @@ class LanguageManager {
         return [.english, .korean]
     }
     
-    // MARK: - Loading Lists from Files
     private func loadListFromFile(named fileName: String) -> [String] {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "txt") else {
             return []

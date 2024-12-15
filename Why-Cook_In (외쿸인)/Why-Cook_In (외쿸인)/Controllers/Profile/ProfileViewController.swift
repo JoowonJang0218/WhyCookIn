@@ -2,8 +2,6 @@
 //  ProfileViewController.swift
 //  Why-Cook_In (외쿸인)
 //
-//  Created by Joowon Jang on 12/12/24.
-//
 
 import UIKit
 
@@ -11,26 +9,29 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     private let authService = AuthenticationService.shared
     private var chosenImage: UIImage?
+    var isEditingProfile = false // Set this when pushing this VC for editing
     
-    // We’ll assume you have a currentUser from auth
     private var currentUser: User {
-        // In a real scenario, handle if user is nil.
         return authService.getCurrentUser()!
     }
     
-    // Lists: from LanguageManager. For home country and childhood country,
-    // if you have separate files, load them into separate arrays.
-    // For demonstration, we'll reuse nationalities for them.
     private var nationalityList = LanguageManager.shared.nationalities
     private var ethnicityList = LanguageManager.shared.ethnicities
-    private var countryList = LanguageManager.shared.nationalities // Placeholder for home/childhood
+    private var countryList = LanguageManager.shared.countries // now from list-of-countries.txt
     private let sexOptions = ["Male", "Female", "Other"]
     
     private let nationalityField = UITextField()
-    private let ethnicityField = UITextField()
-    private let homeCountryField = UITextField()
-    private let childhoodCountryField = UITextField()
+    private let ethnicityField = UITextField() // Optional
+    private let homeCountryField = UITextField() // Optional
+    private let childhoodCountryField = UITextField() // Optional
     private let sexField = UITextField()
+    private let ageField: UITextField = {
+        let tf = UITextField()
+        tf.borderStyle = .roundedRect
+        tf.keyboardType = .numberPad
+        tf.autocapitalizationType = .none
+        return tf
+    }()
     
     private let photoButton: UIButton = {
         let btn = UIButton(type: .system)
@@ -48,12 +49,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         return btn
     }()
     
-    private let ageField: UITextField = {
-        let tf = UITextField()
-        tf.borderStyle = .roundedRect
-        tf.keyboardType = .numberPad
-        tf.autocapitalizationType = .none
-        return tf
+    private let imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.isUserInteractionEnabled = true
+        return iv
     }()
     
     override func viewDidLoad() {
@@ -62,11 +62,29 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupNotifications()
         setupFields()
         
+        photoButton.addTarget(self, action: #selector(didTapPhoto), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
+        
+        let imageTap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto))
+        imageView.addGestureRecognizer(imageTap)
+        
+        view.addSubview(imageView)
         view.addSubview(photoButton)
         view.addSubview(saveButton)
         
-        photoButton.addTarget(self, action: #selector(didTapPhoto), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
+        // If editing profile, load existing profile data
+        if isEditingProfile, let profile = DatabaseManager.shared.getUserProfile(user: currentUser) {
+            nationalityField.text = profile.nationality
+            ethnicityField.text = profile.ethnicity.isEmpty ? "" : profile.ethnicity
+            homeCountryField.text = profile.homeCountry.isEmpty ? "" : profile.homeCountry
+            childhoodCountryField.text = profile.childhoodCountry.isEmpty ? "" : profile.childhoodCountry
+            sexField.text = profile.sex
+            ageField.text = profile.age > 0 ? "\(profile.age)" : ""
+            if let photo = profile.photo {
+                chosenImage = photo
+                imageView.image = photo
+            }
+        }
         
         updateText()
     }
@@ -82,14 +100,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             view.addSubview($0)
         }
         
-        // Add targets or gestures to open selection
         nationalityField.addTarget(self, action: #selector(didTapNationality), for: .editingDidBegin)
         ethnicityField.addTarget(self, action: #selector(didTapEthnicity), for: .editingDidBegin)
         homeCountryField.addTarget(self, action: #selector(didTapHomeCountry), for: .editingDidBegin)
         childhoodCountryField.addTarget(self, action: #selector(didTapChildhoodCountry), for: .editingDidBegin)
         sexField.addTarget(self, action: #selector(didTapSex), for: .editingDidBegin)
         
-        // Prevent keyboard from showing just by tapping
         nationalityField.inputView = UIView()
         ethnicityField.inputView = UIView()
         homeCountryField.inputView = UIView()
@@ -101,12 +117,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let lm = LanguageManager.shared
         title = lm.string(forKey: "profile_title")
         
-        nationalityField.placeholder = lm.string(forKey: "profile_nationality")
-        ethnicityField.placeholder = lm.string(forKey: "profile_ethnicity")
-        homeCountryField.placeholder = lm.string(forKey: "profile_home_country")
-        childhoodCountryField.placeholder = lm.string(forKey: "profile_childhood_country")
-        sexField.placeholder = lm.string(forKey: "profile_sex")
-        ageField.placeholder = lm.string(forKey: "profile_age")
+        nationalityField.placeholder = lm.string(forKey: "profile_nationality") // Required
+        ethnicityField.placeholder = lm.string(forKey: "profile_ethnicity") // Optional
+        homeCountryField.placeholder = lm.string(forKey: "profile_home_country") // Optional
+        childhoodCountryField.placeholder = lm.string(forKey: "profile_childhood_country") // Optional
+        sexField.placeholder = lm.string(forKey: "profile_sex") // Required
+        ageField.placeholder = lm.string(forKey: "profile_age") // Required
         
         photoButton.setTitle(lm.string(forKey: "profile_photo"), for: .normal)
         saveButton.setTitle(lm.string(forKey: "profile_save"), for: .normal)
@@ -114,12 +130,22 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         let padding: CGFloat = 20
         let fieldHeight: CGFloat = 44
-        var y = view.safeAreaInsets.top + 100
+        var y = view.safeAreaInsets.top + 20
+        
+        imageView.frame = CGRect(x: padding, y: y, width: 100, height: 100)
+        y += 120
         
         nationalityField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
         y += fieldHeight + 10
+        
+        sexField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
+        y += fieldHeight + 10
+        
+        ageField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
+        y += fieldHeight + 20
         
         ethnicityField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
         y += fieldHeight + 10
@@ -128,12 +154,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         y += fieldHeight + 10
         
         childhoodCountryField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
-        y += fieldHeight + 10
-        
-        sexField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
-        y += fieldHeight + 10
-        
-        ageField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
         y += fieldHeight + 20
         
         photoButton.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
@@ -167,8 +187,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @objc private func didTapSex() {
-        // Simple action sheet since only a few options
-        let alert = UIAlertController(title: LanguageManager.shared.string(forKey: "profile_sex"),
+        let lm = LanguageManager.shared
+        let alert = UIAlertController(title: lm.string(forKey: "profile_sex"),
                                       message: nil, preferredStyle: .actionSheet)
         for option in sexOptions {
             alert.addAction(UIAlertAction(title: option, style: .default, handler: { [weak self] _ in
@@ -176,7 +196,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }))
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        // iPad support
         if let popover = alert.popoverPresentationController {
             popover.sourceView = sexField
             popover.sourceRect = sexField.bounds
@@ -192,14 +211,22 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @objc private func didTapSave() {
+        let lm = LanguageManager.shared
         guard let currentUser = authService.getCurrentUser() else { return }
         
         let nationality = nationalityField.text ?? ""
+        let sex = sexField.text ?? ""
+        let age = Int(ageField.text ?? "0") ?? 0
+        
+        // Required fields: nationality, sex, age > 0, chosenImage != nil
+        if nationality.isEmpty || sex.isEmpty || age <= 0 || chosenImage == nil {
+            showAlert(title: lm.string(forKey: "error_title"), message: lm.string(forKey: "missing_required_fields") + " " + (chosenImage == nil ? lm.string(forKey: "picture_required") : ""))
+            return
+        }
+        
         let ethnicity = ethnicityField.text ?? ""
         let homeCountry = homeCountryField.text ?? ""
         let childhoodCountry = childhoodCountryField.text ?? ""
-        let sex = sexField.text ?? ""
-        let age = Int(ageField.text ?? "0") ?? 0
         
         DatabaseManager.shared.updateUserProfile(
             user: currentUser,
@@ -212,16 +239,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             photo: chosenImage
         )
         
-        // Show profile detail
         let detailVC = ProfileDetailViewController(user: currentUser)
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    // UIImagePickerControllerDelegate
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let img = info[.originalImage] as? UIImage {
             chosenImage = img
+            imageView.image = img
         }
         picker.dismiss(animated: true)
     }
@@ -231,5 +257,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         vc.items = list
         vc.onSelect = completion
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
