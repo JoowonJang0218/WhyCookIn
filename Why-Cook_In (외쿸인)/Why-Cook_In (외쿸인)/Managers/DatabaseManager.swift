@@ -7,164 +7,323 @@
 
 import Foundation
 import UIKit
-
-struct UserProfile {
-    let nationality: String
-    let age: Int
-    let sex: String
-    let ethnicity: String
-    let homeCountry: String
-    let childhoodCountry: String
-    let photo: UIImage?
-}
+import CoreData
 
 class DatabaseManager {
     static let shared = DatabaseManager()
-    
-    private var users = [String: (password: String, user: User)]()
-    private var posts = [Post]()
-    private var categories = [
-        "category_general",
-        "category_housing",
-        "category_immigration",
-        "category_jobs",
-        "category_suggest_new",
-        "category_sim_card",
-        "category_bank_account"
-    ]
-    private var userProfiles: [String: UserProfile] = [:]
-    
-    // For comments, we’ll keep a dictionary keyed by post ID
-    private var commentsForPost: [UUID: [Comment]] = [:]
-    
-    // For user visibility
-    private var userVisibility: [String: Bool] = [:]
-    
-    private var reactionsForPost: [UUID: Int] = [:]
-
-    func empathizePost(_ post: Post, by user: User) {
-        // Just increment a counter
-        let currentCount = reactionsForPost[post.id] ?? 0
-        reactionsForPost[post.id] = currentCount + 1
-    }
-
-    func getReactionsCount(for post: Post) -> Int {
-        return reactionsForPost[post.id] ?? 0
-    }
-
-    
     private init() {}
     
-    // MARK: - User-related methods
-    func addUser(email: String, password: String, name: String, userID: String) -> Bool {
-        guard users[email] == nil else { return false }
-        let newUser = User(id: UUID(), name: name, email: email, userID: userID)
-        users[email] = (password, newUser)
+    // MARK: - User Methods
+    func addUser(email: String, password: String, firstName: String, lastName: String, userID: UUID) -> Bool {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", email)
+        
+        if (try? context.fetch(request).first) != nil {
+            return false // user already exists
+        }
+        
+        let newUser = UserEntity(context: context)
+        newUser.email = email
+        newUser.password = password
+        newUser.first_name = firstName
+        newUser.last_name = lastName
+        newUser.userID = userID
+        
+        CoreDataManager.shared.saveContext()
         return true
     }
     
     func verifyUser(email: String, password: String) -> Bool {
-        guard let stored = users[email] else { return false }
-        return stored.password == password
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@ AND password == %@", email, password)
+        
+        return (try? context.fetch(request).first) != nil
     }
     
     func fetchUser(email: String) -> User? {
-        return users[email]?.user
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", email)
+        
+        if let userEntity = try? context.fetch(request).first {
+            return User(
+                userID: userEntity.userID ?? UUID(),
+                firstName: userEntity.first_name ?? "",
+                lastName: userEntity.last_name ?? "",
+                email: userEntity.email ?? "",
+                isVisible: userEntity.isVisible == true
+            )
+        }
+        return nil
     }
     
-    // MARK: - Profile methods
+    func getCurrentUser() -> User? {
+        guard let currentUserEmail = AuthenticationService.shared.getCurrentUser()?.email else { return nil }
+        return fetchUser(email: currentUserEmail)
+    }
+    
+    // MARK: - Profile Methods
     func updateUserProfile(user: User,
                            nationality: String,
-                           age: Int,
+                           birthday: Date,    // replace age: Int with birthday: Date
                            sex: String,
                            ethnicity: String,
                            homeCountry: String,
                            childhoodCountry: String,
                            photo: UIImage?) {
-        userProfiles[user.email] = UserProfile(
-            nationality: nationality,
-            age: age,
-            sex: sex,
-            ethnicity: ethnicity,
-            homeCountry: homeCountry,
-            childhoodCountry: childhoodCountry,
-            photo: photo
-        )
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", user.email)
+        
+        if let userEntity = try? context.fetch(request).first {
+            let profile: ProfileEntity
+            if let existingProfile = userEntity.profile {
+                profile = existingProfile
+            } else {
+                profile = ProfileEntity(context: context)
+                userEntity.profile = profile
+            }
+            
+            profile.nationality = nationality
+            profile.birthday = birthday   // set the birthday date
+            profile.sex = sex
+            profile.ethnicity = ethnicity
+            profile.homeCountry = homeCountry
+            profile.childhoodCountry = childhoodCountry
+            if let img = photo, let imageData = img.jpegData(compressionQuality: 0.9) {
+                profile.photo = imageData
+            }
+            
+            CoreDataManager.shared.saveContext()
+        }
     }
+    
+    func calculateAge(from birthday: Date) -> Int {
+        let calendar = Calendar.current
+        let now = Date()
+        let ageComponents = calendar.dateComponents([.year], from: birthday, to: now)
+        return ageComponents.year ?? 0
+    }
+    
+    
     
     func getUserProfile(user: User) -> UserProfile? {
-        return userProfiles[user.email]
-    }
-    
-    func updateUserProfilePhoto(user: User, photo: UIImage) {
-        guard var existingProfile = userProfiles[user.email] else {
-            // If no profile exists yet, create one with defaults
-            let newProfile = UserProfile(
-                nationality: "",
-                age: 0,
-                sex: "",
-                ethnicity: "",
-                homeCountry: "",
-                childhoodCountry: "",
-                photo: photo
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", user.email)
+        
+        if let userEntity = try? context.fetch(request).first,
+           let profile = userEntity.profile {
+            
+            let image: UIImage?
+            if let data = profile.photo {
+                image = UIImage(data: data)
+            } else {
+                image = nil
+            }
+            
+            let birthday = profile.birthday ?? Date() // If not set, default to now
+            
+            return UserProfile(
+                nationality: profile.nationality ?? "",
+                birthday: birthday,          // store birthday date, not age
+                sex: profile.sex ?? "",
+                ethnicity: profile.ethnicity ?? "",
+                homeCountry: profile.homeCountry ?? "",
+                childhoodCountry: profile.childhoodCountry ?? "",
+                photo: image
             )
-            userProfiles[user.email] = newProfile
-            return
         }
-        
-        existingProfile = UserProfile(
-            nationality: existingProfile.nationality,
-            age: existingProfile.age,
-            sex: existingProfile.sex,
-            ethnicity: existingProfile.ethnicity,
-            homeCountry: existingProfile.homeCountry,
-            childhoodCountry: existingProfile.childhoodCountry,
-            photo: photo
-        )
-        
-        userProfiles[user.email] = existingProfile
+        return nil
     }
     
-    // MARK: - Visibility methods
-    func setUserVisibility(user: User, visible: Bool) {
-        userVisibility[user.email] = visible
-    }
-    
-    func isUserVisible(user: User) -> Bool {
-        return userVisibility[user.email] ?? true // default to true
-    }
-    
-    // MARK: - Post-related methods
+    // MARK: - Post Methods
     func savePost(_ post: Post) {
-        posts.append(post)
+        let context = CoreDataManager.shared.context
+        
+        let userRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        userRequest.predicate = NSPredicate(format: "email == %@", post.author.email)
+        // Wait, `post` doesn't have email attribute. We must get `post.author.email`.
+        userRequest.predicate = NSPredicate(format: "email == %@", post.author.email)
+        
+        guard let userEntity = try? context.fetch(userRequest).first else { return }
+        
+        let postEntity = PostEntity(context: context)
+        postEntity.id = post.id
+        postEntity.title = post.title
+        postEntity.content = post.content
+        postEntity.category = post.category
+        postEntity.timestamp = post.timestamp
+        postEntity.author = userEntity
+        
+        CoreDataManager.shared.saveContext()
     }
-    
     func fetchPosts() -> [Post] {
-        return posts.sorted(by: { $0.timestamp > $1.timestamp })
-    }
-    
-    // Categories
-    func fetchCategories() -> [String] {
-        return categories
-    }
-    
-    func addCategory(_ category: String) {
-        if !categories.contains(category) && !category.isEmpty {
-            categories.append(category)
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<PostEntity> = PostEntity.fetchRequest()
+        let sort = NSSortDescriptor(key: "timestamp", ascending: false)
+        request.sortDescriptors = [sort]
+        
+        guard let postEntities = try? context.fetch(request) else {
+            return [] // Return empty array if fetch fails
+        }
+        
+        return postEntities.compactMap { (p: PostEntity) -> Post? in
+            // If author is missing, return nil to skip this post
+            guard let authorEntity = p.author else {
+                return nil
+            }
+            
+            let author = User(
+                userID: authorEntity.userID ?? UUID(),
+                firstName: authorEntity.first_name ?? "",
+                lastName: authorEntity.last_name ?? "",
+                email: authorEntity.email ?? "",
+                isVisible: authorEntity.isVisible
+            )
+            
+            // Construct a Post object using the entity's attributes,
+            // providing default values for optionals
+            return Post(
+                id: p.id ?? UUID(),
+                author: author,
+                title: p.title ?? "",
+                content: p.content ?? "",
+                category: p.category ?? "",
+                timestamp: p.timestamp ?? Date()
+            )
         }
     }
     
-    // MARK: - Comment methods
+    
+    
+    // MARK: - Comments
     func addComment(to post: Post, author: User, content: String) {
-        let newComment = Comment(id: UUID(), author: author, content: content, timestamp: Date())
-        if commentsForPost[post.id] != nil {
-            commentsForPost[post.id]?.append(newComment)
-        } else {
-            commentsForPost[post.id] = [newComment]
-        }
+        let context = CoreDataManager.shared.context
+        
+        let postRequest: NSFetchRequest<PostEntity> = PostEntity.fetchRequest()
+        postRequest.predicate = NSPredicate(format: "id == %@", post.id as CVarArg)
+        guard let postEntity = try? context.fetch(postRequest).first else { return }
+        
+        let userRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        userRequest.predicate = NSPredicate(format: "email == %@", author.email)
+        guard let userEntity = try? context.fetch(userRequest).first else { return }
+        
+        let commentEntity = CommentEntity(context: context)
+        commentEntity.id = UUID()
+        commentEntity.content = content
+        commentEntity.timestamp = Date()
+        commentEntity.author = userEntity
+        commentEntity.post = postEntity
+        
+        CoreDataManager.shared.saveContext()
     }
     
     func fetchComments(for post: Post) -> [Comment] {
-        return commentsForPost[post.id]?.sorted(by: { $0.timestamp < $1.timestamp }) ?? []
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<CommentEntity> = CommentEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "post.id == %@", post.id as CVarArg)
+        
+        let sort = NSSortDescriptor(key: "timestamp", ascending: true)
+        request.sortDescriptors = [sort]
+        
+        guard let commentEntities = try? context.fetch(request) else { return [] }
+        
+        return commentEntities.compactMap { (c: CommentEntity) -> Comment? in
+            guard let authorEntity = c.author else {
+                return nil // Allowed since closure returns Comment?
+            }
+            
+            let author = User(
+                userID: authorEntity.userID ?? UUID(),
+                firstName: authorEntity.first_name ?? "",
+                lastName: authorEntity.last_name ?? "",
+                email: authorEntity.email ?? "",
+                isVisible: authorEntity.isVisible
+            )
+            
+            return Comment(
+                id: c.id ?? UUID(),
+                author: author,
+                content: c.content ?? "",
+                timestamp: c.timestamp ?? Date()
+            )
+        }
+    }
+    
+    
+    // MARK: - Reactions (I feel this shit)
+    private var reactionsForPost: [UUID: Int] = [:] // For now, still in-memory. You could add a reactions attribute to PostEntity.
+    
+    func empathizePost(_ post: Post, by user: User) {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<PostEntity> = PostEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", post.id as CVarArg)
+        
+        if let postEntity = try? context.fetch(request).first {
+            postEntity.reactionsCount += 1
+            CoreDataManager.shared.saveContext()
+        }
+    }
+    
+    func getReactionsCount(for post: Post) -> Int {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<PostEntity> = PostEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", post.id as CVarArg)
+        if let postEntity = try? context.fetch(request).first {
+            return Int(postEntity.reactionsCount)
+        }
+        return 0
+    }
+    
+    func isUserVisible(user: User) -> Bool {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", user.email)
+        
+        if let userEntity = try? context.fetch(request).first {
+            return userEntity.isVisible
+        }
+        return true // Default if user not found, or choose false if you prefer.
+    }
+    
+    func setUserVisibility(user: User, visible: Bool) {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", user.email)
+        
+        if let userEntity = try? context.fetch(request).first {
+            userEntity.isVisible = visible
+            CoreDataManager.shared.saveContext()
+        }
+    }
+    
+    func deleteUser(email: String) {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", email)
+        
+        if let userEntity = try? context.fetch(request).first {
+            context.delete(userEntity)
+            CoreDataManager.shared.saveContext()
+        }
+    }
+    func fetchAllUsers() -> [User] {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        
+        guard let userEntities = try? context.fetch(request) else { return [] }
+        
+        return userEntities.map { ue in
+            User(
+                userID: ue.userID ?? UUID(),
+                firstName: ue.first_name ?? "",
+                lastName: ue.last_name ?? "",
+                email: ue.email ?? "",
+                isVisible: ue.isVisible
+            )
+        }
     }
 }

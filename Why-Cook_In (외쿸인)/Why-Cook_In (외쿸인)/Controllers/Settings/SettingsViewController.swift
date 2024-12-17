@@ -24,6 +24,7 @@ class SettingsViewController: UIViewController {
         return button
     }()
     
+    // Add deleteAccountButton definition
     private let deleteAccountButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemOrange
@@ -95,36 +96,46 @@ class SettingsViewController: UIViewController {
     }
     
     @objc private func didTapChangeLanguage() {
+        // Ensure presentLanguageSelection(from:) is defined or remove this call.
+        // If it's defined elsewhere, make sure this file can see it.
+        // If not needed, remove this method.
         presentLanguageSelection(from: self)
     }
     
     @objc private func didTapLogout() {
         authService.logout()
-        let loginVC = LoginViewController()
-        let nav = BaseNavigationController(rootViewController: loginVC)
+        
+        // Ensure LoginViewController and BaseNavigationController exist
+        let loginVC = LoginViewController()  // Make sure LoginViewController.swift is in your project
+        let nav = BaseNavigationController(rootViewController: loginVC) // Make sure BaseNavigationController.swift is in your project
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
     }
     
     @objc private func didTapDeleteAccount() {
+        guard let currentUser = authService.getCurrentUser() else { return }
+        
+        // Logout first
+        authService.logout()
+        
+        // Delete the user from database
+        DatabaseManager.shared.deleteUser(email: currentUser.email)
+        
         let lm = LanguageManager.shared
-        if authService.getCurrentUser() != nil {
-            authService.logout()
-            let alert = UIAlertController(title: lm.string(forKey: "account_deleted_title"),
-                                          message: lm.string(forKey: "account_deleted_message"),
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                let loginVC = LoginViewController()
-                let nav = BaseNavigationController(rootViewController: loginVC)
-                nav.modalPresentationStyle = .fullScreen
-                self.present(nav, animated: true)
-            })
-            present(alert, animated: true)
-        }
+        let alert = UIAlertController(title: lm.string(forKey: "account_deleted_title"),
+                                      message: lm.string(forKey: "account_deleted_message"),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            let loginVC = LoginViewController()  // Ensure this class exists
+            let nav = BaseNavigationController(rootViewController: loginVC) // Ensure this class exists
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
+        })
+        present(alert, animated: true)
     }
     
     @objc private func didTapPrivacy() {
-        let vc = PrivacyViewController()
+        let vc = PrivacyViewController() // Ensure PrivacyViewController.swift exists
         navigationController?.pushViewController(vc, animated: true)
     }
 }

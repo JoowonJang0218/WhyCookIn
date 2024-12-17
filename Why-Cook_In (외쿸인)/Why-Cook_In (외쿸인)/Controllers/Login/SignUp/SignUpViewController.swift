@@ -80,7 +80,7 @@ class SignUpViewController: UIViewController {
         title = lm.string(forKey: "sign_up_title")
         firstNameField.placeholder = lm.string(forKey: "first_name_placeholder")
         lastNameField.placeholder = lm.string(forKey: "last_name_placeholder")
-        userIDField.placeholder = lm.string(forKey: "user_id_placeholder")
+        userIDField.placeholder = lm.string(forKey: "user_id_placeholder") // We'll ignore or just not use this for ID generation.
         emailField.placeholder = lm.string(forKey: "email_placeholder")
         passwordField.placeholder = lm.string(forKey: "password_placeholder")
         signUpButton.setTitle(lm.string(forKey: "sign_up_button"), for: .normal)
@@ -126,7 +126,6 @@ class SignUpViewController: UIViewController {
         let lm = LanguageManager.shared
         guard let firstName = firstNameField.text, !firstName.isEmpty,
               let lastName = lastNameField.text, !lastName.isEmpty,
-              let userID = userIDField.text, !userID.isEmpty,
               let email = emailField.text, !email.isEmpty,
               let password = passwordField.text, !password.isEmpty else {
             showAlert(title: lm.string(forKey: "error_title"),
@@ -134,7 +133,6 @@ class SignUpViewController: UIViewController {
             return
         }
         
-        // Validate email and password and show exact problems:
         if !isValidEmail(email) {
             showAlert(title: lm.string(forKey: "error_title"),
                       message: lm.string(forKey: "email_requirements"))
@@ -147,9 +145,10 @@ class SignUpViewController: UIViewController {
             return
         }
         
-        let fullName = "\(firstName) \(lastName)"
+        // Generate a UUID for the userID since it's a UUID in the model
+        let generatedUserID = UUID()
         
-        authService.signUp(email: email, password: password, name: fullName, userID: userID) { [weak self] success in
+        authService.signUp(email: email, password: password, firstName: firstName, lastName: lastName, userID: generatedUserID) { [weak self] success in
             DispatchQueue.main.async {
                 if success {
                     self?.completion?()

@@ -38,15 +38,14 @@ class AuthenticationService {
         return currentUser
     }
     
-    func signUp(email: String, password: String, name: String, userID: String, completion: @escaping (Bool) -> Void) {
+    func signUp(email: String, password: String, firstName: String, lastName: String, userID: UUID, completion: @escaping (Bool) -> Void) {
         DispatchQueue.global().async {
             sleep(1)
-            let success = DatabaseManager.shared.addUser(email: email, password: password, name: name, userID: userID)
+            let success = DatabaseManager.shared.addUser(email: email, password: password, firstName: firstName, lastName: lastName, userID: userID)
             if success {
                 self.currentUser = DatabaseManager.shared.fetchUser(email: email)
             }
             completion(success)
         }
     }
-
 }

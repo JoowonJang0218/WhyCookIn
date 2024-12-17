@@ -88,7 +88,7 @@ class PostDetailViewController: UIViewController, UITableViewDataSource, UITable
         NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         
         titleLabel.text = post.title
-        authorLabel.text = post.author.userID
+        authorLabel.text = post.author.userID.uuidString
         contentLabel.text = post.content
         
         empathizeButton.addTarget(self, action: #selector(didTapEmpathize), for: .touchUpInside)
@@ -173,7 +173,7 @@ class PostDetailViewController: UIViewController, UITableViewDataSource, UITable
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let c = comments[indexPath.row]
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        cell.textLabel?.text = c.author.userID
+        cell.textLabel?.text = c.author.userID.uuidString
         cell.detailTextLabel?.text = c.content
         cell.detailTextLabel?.numberOfLines = 0
         return cell

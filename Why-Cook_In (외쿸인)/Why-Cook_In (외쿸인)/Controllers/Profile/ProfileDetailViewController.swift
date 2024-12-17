@@ -9,6 +9,7 @@ class ProfileDetailViewController: UIViewController {
     
     private let user: User
     private var profile: UserProfile?
+    private var didShowSwipe = false // A flag to avoid showing swipe multiple times
     
     private let imageView: UIImageView = {
         let iv = UIImageView()
@@ -19,7 +20,6 @@ class ProfileDetailViewController: UIViewController {
         return iv
     }()
     
-    // We'll use optional labels array to handle optional fields dynamically
     private var labels: [UILabel] = []
     
     init(user: User) {
@@ -35,15 +35,51 @@ class ProfileDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+
+        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         
+        view.addSubview(imageView)
+        updateUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Refresh the profile each time the screen appears
+        profile = DatabaseManager.shared.getUserProfile(user: user)
+        updateUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // If we have a profile and haven't shown the swipe yet, show it
+        if profile != nil && !didShowSwipe {
+            didShowSwipe = true
+            
+            // Present or push the SwipeMatchViewController
+            let swipeVC = SwipeMatchViewController()
+            navigationController?.pushViewController(swipeVC, animated: true)
+        }
+    }
+    
+    @objc private func updateText() {
+        title = LanguageManager.shared.string(forKey: "profile_title")
+        displayProfileData()
+    }
+    
+    private func updateUI() {
+        // If no profile, present the ProfileViewController modally
         if profile == nil {
-            // No profile exists; force creation
             let vc = ProfileViewController()
-            vc.isEditingProfile = false // initial creation
-            navigationController?.pushViewController(vc, animated: false)
-            return // Don’t load detail view until profile is created
+            vc.isEditingProfile = false
+            let nav = BaseNavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: false)
+            return
         }
         
+        // If we have a profile, show edit button and data
         navigationItem.hidesBackButton = true
         let editItem = UIBarButtonItem(title: LanguageManager.shared.string(forKey: "edit_button"),
                                        style: .plain,
@@ -51,19 +87,8 @@ class ProfileDetailViewController: UIViewController {
                                        action: #selector(didTapEdit))
         navigationItem.rightBarButtonItem = editItem
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
-        
-        view.addSubview(imageView)
-        
-        updateText()
         displayProfileData()
         setupConstraints()
-    }
-
-    
-    @objc private func updateText() {
-        title = LanguageManager.shared.string(forKey: "profile_title")
-        displayProfileData()
     }
     
     private func displayProfileData() {
@@ -73,13 +98,12 @@ class ProfileDetailViewController: UIViewController {
         }
         labels.removeAll()
         
-        let lm = LanguageManager.shared
         guard let profile = profile else { return }
-        
+        let lm = LanguageManager.shared
         imageView.image = profile.photo
         
         func makeLabel(key: String, value: String) {
-            guard !value.isEmpty else { return } // Don't show if empty
+            guard !value.isEmpty else { return }
             let lbl = UILabel()
             lbl.translatesAutoresizingMaskIntoConstraints = false
             lbl.text = "\(lm.string(forKey: key)): \(value)"
@@ -89,8 +113,9 @@ class ProfileDetailViewController: UIViewController {
         
         makeLabel(key: "profile_nationality", value: profile.nationality)
         makeLabel(key: "profile_sex", value: profile.sex)
-        if profile.age > 0 {
-            makeLabel(key: "profile_age", value: "\(profile.age)")
+        let age = calculateAge(from: profile.birthday)
+        if age > 0 {
+            makeLabel(key: "profile_age", value: "\(age)")
         }
         if !profile.ethnicity.isEmpty {
             makeLabel(key: "profile_ethnicity", value: profile.ethnicity)
@@ -102,6 +127,14 @@ class ProfileDetailViewController: UIViewController {
             makeLabel(key: "profile_childhood_country", value: profile.childhoodCountry)
         }
     }
+    
+    private func calculateAge(from birthday: Date) -> Int {
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.year], from: birthday, to: now)
+        return components.year ?? 0
+    }
+
     
     private func setupConstraints() {
         let padding: CGFloat = 20
@@ -121,7 +154,6 @@ class ProfileDetailViewController: UIViewController {
     }
     
     @objc private func didTapEdit() {
-        // Go back to ProfileViewController in edit mode
         let vc = ProfileViewController()
         vc.isEditingProfile = true
         navigationController?.pushViewController(vc, animated: true)

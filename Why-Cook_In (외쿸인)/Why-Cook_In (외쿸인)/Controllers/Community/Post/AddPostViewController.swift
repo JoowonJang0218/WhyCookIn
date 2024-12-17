@@ -12,6 +12,14 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var postAddedCompletion: (() -> Void)?
     private var viewModel: CommunityViewModel
     
+    private var categories: [String] = [
+        "category_general",
+        "category_housing",
+        "category_immigration",
+        "category_jobs",
+        "category_suggest_new"
+    ]
+    
     // Category label
     private let categoryLabel: UILabel = {
         let label = UILabel()
@@ -34,7 +42,6 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }()
     
     private let categoryPicker = UIPickerView()
-    private var categories: [String] = []
     
     private let addCategoryButton: UIButton = {
         let btn = UIButton(type: .system)
@@ -85,7 +92,6 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         categoryPicker.dataSource = self
         categoryPicker.delegate = self
         
-        categories = DatabaseManager.shared.fetchCategories()
         
         // Initially hide newCategoryField and addCategoryButton
         newCategoryField.isHidden = true
@@ -142,8 +148,6 @@ class AddPostViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     @objc private func didTapAddCategory() {
         guard let newCat = newCategoryField.text, !newCat.isEmpty else { return }
-        DatabaseManager.shared.addCategory(newCat)
-        categories = DatabaseManager.shared.fetchCategories()
         categoryPicker.reloadAllComponents()
     }
     

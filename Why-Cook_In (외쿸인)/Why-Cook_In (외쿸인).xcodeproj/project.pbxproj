@@ -6,7 +6,26 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8E980E322D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2E2D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift */; };
+		8E980E332D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2F2D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift */; };
+		8E980E342D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2D2D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift */; };
+		8E980E352D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2B2D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift */; };
+		8E980E362D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E312D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift */; };
+		8E980E372D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2A2D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift */; };
+		8E980E382D117E3900B9EC43 /* UserEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E302D117E3900B9EC43 /* UserEntity+CoreDataClass.swift */; };
+		8E980E392D117E3900B9EC43 /* PostEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2C2D117E3900B9EC43 /* PostEntity+CoreDataClass.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		8E980E2A2D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E980E2B2D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E980E2C2D117E3900B9EC43 /* PostEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E980E2D2D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E980E2E2D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E980E2F2D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E980E302D117E3900B9EC43 /* UserEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E980E312D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8EC4DA6C2D0AD8D300577C84 /* Why-Cook_In (외쿸인).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Why-Cook_In (외쿸인).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -45,6 +64,14 @@
 		8EC4DA632D0AD8D200577C84 = {
 			isa = PBXGroup;
 			children = (
+				8E980E2A2D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift */,
+				8E980E2B2D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift */,
+				8E980E2C2D117E3900B9EC43 /* PostEntity+CoreDataClass.swift */,
+				8E980E2D2D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift */,
+				8E980E2E2D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift */,
+				8E980E2F2D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift */,
+				8E980E302D117E3900B9EC43 /* UserEntity+CoreDataClass.swift */,
+				8E980E312D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift */,
 				8EC4DA6E2D0AD8D300577C84 /* Why-Cook_In (외쿸인) */,
 				8EC4DA6D2D0AD8D300577C84 /* Products */,
 			);
@@ -132,6 +159,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E980E322D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift in Sources */,
+				8E980E332D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift in Sources */,
+				8E980E342D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift in Sources */,
+				8E980E352D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift in Sources */,
+				8E980E362D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift in Sources */,
+				8E980E372D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift in Sources */,
+				8E980E382D117E3900B9EC43 /* UserEntity+CoreDataClass.swift in Sources */,
+				8E980E392D117E3900B9EC43 /* PostEntity+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

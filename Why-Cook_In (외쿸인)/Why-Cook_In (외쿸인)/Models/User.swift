@@ -8,8 +8,11 @@
 import Foundation
 
 struct User {
-    let id: UUID
-    let name: String    // Real name
+    let userID: UUID
+    let firstName: String
+    let lastName: String
     let email: String
-    let userID: String  // Chosen user ID for app usage
+    // password is usually not stored directly in a struct, just in the database for verification
+    // isVisible could be used if needed in the UI:
+    let isVisible: Bool
 }
