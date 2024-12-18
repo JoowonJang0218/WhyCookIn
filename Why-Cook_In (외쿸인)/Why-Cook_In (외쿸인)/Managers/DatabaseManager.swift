@@ -114,27 +114,29 @@ class DatabaseManager {
         let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         request.predicate = NSPredicate(format: "email == %@", user.email)
         
-        if let userEntity = try? context.fetch(request).first,
-           let profile = userEntity.profile {
+        if let userEntity = try? context.fetch(request).first {
+            // Convert UserEntity and associated ProfileEntity to UserProfile
+            guard let profileEntity = userEntity.profile else { return nil }
             
             let image: UIImage?
-            if let data = profile.photo {
+            if let data = profileEntity.photo {
                 image = UIImage(data: data)
             } else {
                 image = nil
             }
             
-            let birthday = profile.birthday ?? Date() // If not set, default to now
-            
-            return UserProfile(
-                nationality: profile.nationality ?? "",
-                birthday: birthday,          // store birthday date, not age
-                sex: profile.sex ?? "",
-                ethnicity: profile.ethnicity ?? "",
-                homeCountry: profile.homeCountry ?? "",
-                childhoodCountry: profile.childhoodCountry ?? "",
-                photo: image
+            let userProfile = UserProfile(
+                nationality: profileEntity.nationality ?? "",
+                birthday: profileEntity.birthday ?? Date(), // Ensure birthday is saved in ProfileEntity
+                sex: profileEntity.sex ?? "",
+                ethnicity: profileEntity.ethnicity ?? "",
+                homeCountry: profileEntity.homeCountry ?? "",
+                childhoodCountry: profileEntity.childhoodCountry ?? "",
+                photo: image,
+                isVisible: userEntity.isVisible
             )
+            
+            return userProfile
         }
         return nil
     }
@@ -324,6 +326,20 @@ class DatabaseManager {
                 email: ue.email ?? "",
                 isVisible: ue.isVisible
             )
+        }
+    }
+    func updateUserVisibility(user: User, visible: Bool) {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", user.email)
+        
+        if let userEntity = try? context.fetch(request).first {
+            userEntity.isVisible = visible // Make sure isVisible is an attribute of UserEntity
+            do {
+                try context.save()
+            } catch {
+                print("Failed to save visibility: \(error)")
+            }
         }
     }
 }

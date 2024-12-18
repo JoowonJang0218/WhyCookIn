@@ -16,4 +16,5 @@ struct UserProfile {
     let homeCountry: String
     let childhoodCountry: String
     let photo: UIImage?
+    let isVisible: Bool
 }

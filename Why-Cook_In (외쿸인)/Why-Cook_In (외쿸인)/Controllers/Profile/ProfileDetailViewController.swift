@@ -59,6 +59,7 @@ class ProfileDetailViewController: UIViewController {
             
             // Present or push the SwipeMatchViewController
             let swipeVC = SwipeMatchViewController()
+            swipeVC.modalPresentationStyle = .fullScreen
             navigationController?.pushViewController(swipeVC, animated: true)
         }
     }

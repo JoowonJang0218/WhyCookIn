@@ -18,6 +18,8 @@ class SwipeMatchViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Swipe & Match"
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(didTapEdit))
         
         // Dummy Data
         users = [
@@ -27,6 +29,12 @@ class SwipeMatchViewController: UIViewController {
         ]
         
         setupCards()
+    }
+    
+    @objc private func didTapEdit() {
+        let editVC = ProfileViewController()
+        editVC.isEditingProfile = true
+        navigationController?.pushViewController(editVC, animated: true)
     }
     
     private func setupCards() {
@@ -134,5 +142,59 @@ class SwipeMatchViewController: UIViewController {
         // E.g., send "pass" to server
         print("Card passed!")
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let currentUser = AuthenticationService.shared.getCurrentUser(),
+              let profile = DatabaseManager.shared.getUserProfile(user: currentUser) else { return }
+        
+        if !profile.isVisible {
+            // User is not visible, show greyed-out overlay
+            showVisibilityOverlay()
+        } else {
+            // User is visible, ensure overlay is removed if it exists
+            removeVisibilityOverlay()
+        }
+    }
+    private var visibilityOverlay: UIView?
+
+    private func showVisibilityOverlay() {
+        // Create a blur or semi-transparent overlay
+        let overlay = UIView(frame: view.bounds)
+        overlay.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        overlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        let messageLabel = UILabel()
+        messageLabel.text = "You must be visible to see others.\nPlease turn visibility on."
+        messageLabel.textColor = .white
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        
+        overlay.addSubview(messageLabel)
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            messageLabel.centerXAnchor.constraint(equalTo: overlay.centerXAnchor),
+            messageLabel.centerYAnchor.constraint(equalTo: overlay.centerYAnchor),
+            messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: overlay.leadingAnchor, constant: 20),
+            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: overlay.trailingAnchor, constant: -20)
+        ])
+        
+        view.addSubview(overlay)
+        self.visibilityOverlay = overlay
+        
+        // Disable user interaction on underlying swiping views
+        view.isUserInteractionEnabled = false
+        overlay.isUserInteractionEnabled = true
+    }
+
+    private func removeVisibilityOverlay() {
+        visibilityOverlay?.removeFromSuperview()
+        visibilityOverlay = nil
+        
+        // Re-enable interaction
+        view.isUserInteractionEnabled = true
+    }
+
 }
 

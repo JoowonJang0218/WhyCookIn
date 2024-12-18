@@ -7,13 +7,24 @@ import UIKit
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    var isEditingProfile = false
     private let authService = AuthenticationService.shared
     private var chosenImage: UIImage?
-    var isEditingProfile = false
     
     private var currentUser: User {
         return authService.getCurrentUser()!
     }
+    
+    private let visibilitySwitch: UISwitch = {
+        let sw = UISwitch()
+        return sw
+    }()
+    
+    private let visibilityLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Visible to Others"
+        return lbl
+    }()
     
     private var nationalityList = LanguageManager.shared.nationalities
     private var ethnicityList = LanguageManager.shared.ethnicities
@@ -26,41 +37,51 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     private let childhoodCountryField = UITextField()
     private let sexField = UITextField()
     
-    // New birthday field for manual input:
+    // Birthday field
     private let birthdayField: UITextField = {
         let tf = UITextField()
         tf.borderStyle = .roundedRect
         tf.autocapitalizationType = .none
-        tf.placeholder = "YYYY-MM-DD" // Guide user on the format
+        tf.placeholder = "YYYY-MM-DD"
         return tf
     }()
     
-    private let photoButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = .systemBlue
-        btn.setTitleColor(.white, for: .normal)
-        btn.layer.cornerRadius = 8
-        return btn
-    }()
+    // Remove the Add Photo button entirely
     
     private let saveButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.backgroundColor = .systemGreen
         btn.setTitleColor(.white, for: .normal)
         btn.layer.cornerRadius = 8
+        btn.setTitle("Save", for: .normal)
         return btn
     }()
     
     private let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.isUserInteractionEnabled = true
+        iv.layer.cornerRadius = 50 // Will update in layout for a circle
+        iv.layer.masksToBounds = true
         return iv
+    }()
+    
+    // A small transparent button or label on top of imageView to indicate editing photo
+    private let editPhotoButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Edit Photo", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        btn.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        btn.layer.cornerRadius = 4
+        btn.layer.masksToBounds = true
+        return btn
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        title = isEditingProfile ? "Edit Profile" : "Set Profile"
         
         setupNotifications()
         setupFields()
@@ -69,38 +90,35 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             navigationItem.hidesBackButton = true
         }
         
-        photoButton.addTarget(self, action: #selector(didTapPhoto), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
+        if let profile = DatabaseManager.shared.getUserProfile(user: currentUser) {
+            visibilitySwitch.isOn = profile.isVisible
+            nationalityField.text = profile.nationality
+            ethnicityField.text = profile.ethnicity
+            homeCountryField.text = profile.homeCountry
+            childhoodCountryField.text = profile.childhoodCountry
+            sexField.text = profile.sex
+            chosenImage = profile.photo
+            if let photo = profile.photo {
+                imageView.image = photo
+            }
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            birthdayField.text = formatter.string(from: profile.birthday)
+        } else {
+            visibilitySwitch.isOn = true
+        }
         
         let imageTap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto))
         imageView.addGestureRecognizer(imageTap)
         
-        view.addSubview(imageView)
-        view.addSubview(photoButton)
-        view.addSubview(saveButton)
+        editPhotoButton.addTarget(self, action: #selector(didTapPhoto), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
         
-        // If editing profile, load existing data
-        if isEditingProfile, let profile = DatabaseManager.shared.getUserProfile(user: currentUser) {
-            nationalityField.text = profile.nationality
-            ethnicityField.text = profile.ethnicity.isEmpty ? "" : profile.ethnicity
-            homeCountryField.text = profile.homeCountry.isEmpty ? "" : profile.homeCountry
-            childhoodCountryField.text = profile.childhoodCountry.isEmpty ? "" : profile.childhoodCountry
-            sexField.text = profile.sex
-            
-            if let photo = profile.photo {
-                chosenImage = photo
-                imageView.image = photo
-            }
-            
-            // Display existing birthday in the format YYYY-MM-DD
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            birthdayField.text = formatter.string(from: profile.birthday)
-        } else if let profile = DatabaseManager.shared.getUserProfile(user: currentUser) {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            birthdayField.text = formatter.string(from: profile.birthday)
-        }
+        view.addSubview(visibilityLabel)
+        view.addSubview(visibilitySwitch)
+        view.addSubview(imageView)
+        view.addSubview(editPhotoButton)
+        view.addSubview(saveButton)
         
         updateText()
     }
@@ -138,10 +156,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         homeCountryField.placeholder = lm.string(forKey: "profile_home_country")
         childhoodCountryField.placeholder = lm.string(forKey: "profile_childhood_country")
         sexField.placeholder = lm.string(forKey: "profile_sex")
-        // birthdayField placeholder is already set as YYYY-MM-DD, you can localize if needed
         
-        photoButton.setTitle(lm.string(forKey: "profile_photo"), for: .normal)
         saveButton.setTitle(lm.string(forKey: "profile_save"), for: .normal)
+        // "Edit Photo" text is already set, you can localize if you want
     }
     
     override func viewDidLayoutSubviews() {
@@ -151,8 +168,26 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let fieldHeight: CGFloat = 44
         var y = view.safeAreaInsets.top + 20
         
-        imageView.frame = CGRect(x: padding, y: y, width: 100, height: 100)
-        y += 120
+        visibilityLabel.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: 30)
+        y += 40
+        visibilitySwitch.frame = CGRect(x: padding, y: y, width: 50, height: 30)
+        y += 60
+        
+        // Make the image circle: let's pick a size for the image
+        let imageSize: CGFloat = 100
+        imageView.layer.cornerRadius = imageSize / 2
+        imageView.frame = CGRect(x: (view.frame.size.width - imageSize)/2, y: y, width: imageSize, height: imageSize)
+        
+        // Position editPhotoButton on top of the imageView
+        let editPhotoButtonSize = CGSize(width: 80, height: 24)
+        editPhotoButton.frame = CGRect(
+            x: imageView.frame.midX - editPhotoButtonSize.width/2,
+            y: imageView.frame.maxY - editPhotoButtonSize.height - 5,
+            width: editPhotoButtonSize.width,
+            height: editPhotoButtonSize.height
+        )
+        
+        y += imageSize + 20
         
         nationalityField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
         y += fieldHeight + 10
@@ -160,7 +195,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         sexField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
         y += fieldHeight + 10
         
-        // Birthday field for manual input
         birthdayField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
         y += fieldHeight + 20
         
@@ -171,9 +205,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         y += fieldHeight + 10
         
         childhoodCountryField.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
-        y += fieldHeight + 20
-        
-        photoButton.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
         y += fieldHeight + 20
         
         saveButton.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
@@ -239,16 +270,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         let nationality = nationalityField.text ?? ""
         let sex = sexField.text ?? ""
-        
+        let ethnicity = ethnicityField.text ?? ""
+        let homeCountry = homeCountryField.text ?? ""
+        let childhoodCountry = childhoodCountryField.text ?? ""
         if nationality.isEmpty || sex.isEmpty || chosenImage == nil {
             showAlert(title: lm.string(forKey: "error_title"),
                       message: lm.string(forKey: "missing_required_fields") + " " + (chosenImage == nil ? lm.string(forKey: "picture_required") : ""))
             return
         }
         
-        let ethnicity = ethnicityField.text ?? ""
-        let homeCountry = homeCountryField.text ?? ""
-        let childhoodCountry = childhoodCountryField.text ?? ""
         
         guard let birthdayString = birthdayField.text, !birthdayString.isEmpty else {
             showAlert(title: lm.string(forKey: "error_title"),
@@ -274,6 +304,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             childhoodCountry: childhoodCountry,
             photo: chosenImage
         )
+        
+        DatabaseManager.shared.updateUserVisibility(user: currentUser, visible: visibilitySwitch.isOn)
         
         if isEditingProfile {
             navigationController?.popViewController(animated: true)
@@ -304,12 +336,5 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
-    }
-    
-    private func calculateAge(from birthday: Date) -> Int {
-        let calendar = Calendar.current
-        let now = Date()
-        let components = calendar.dateComponents([.year], from: birthday, to: now)
-        return components.year ?? 0
     }
 }

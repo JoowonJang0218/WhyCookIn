@@ -24,7 +24,6 @@ class SettingsViewController: UIViewController {
         return button
     }()
     
-    // Add deleteAccountButton definition
     private let deleteAccountButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemOrange
@@ -41,6 +40,17 @@ class SettingsViewController: UIViewController {
         return button
     }()
     
+    #if DEBUG
+    private let allUsersButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemTeal
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 8
+        button.setTitle("All Users (Debug)", for: .normal)
+        return button
+    }()
+    #endif
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -56,6 +66,11 @@ class SettingsViewController: UIViewController {
         logoutButton.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
         deleteAccountButton.addTarget(self, action: #selector(didTapDeleteAccount), for: .touchUpInside)
         privacyButton.addTarget(self, action: #selector(didTapPrivacy), for: .touchUpInside)
+        
+        #if DEBUG
+        view.addSubview(allUsersButton)
+        allUsersButton.addTarget(self, action: #selector(didTapAllUsers), for: .touchUpInside)
+        #endif
         
         updateText()
     }
@@ -93,21 +108,24 @@ class SettingsViewController: UIViewController {
                                            y: logoutButton.frame.maxY + 20,
                                            width: view.frame.size.width - padding*2,
                                            height: 44)
+        
+        #if DEBUG
+        allUsersButton.frame = CGRect(x: padding,
+                                      y: deleteAccountButton.frame.maxY + 20,
+                                      width: view.frame.size.width - padding*2,
+                                      height: 44)
+        #endif
     }
     
     @objc private func didTapChangeLanguage() {
-        // Ensure presentLanguageSelection(from:) is defined or remove this call.
-        // If it's defined elsewhere, make sure this file can see it.
-        // If not needed, remove this method.
         presentLanguageSelection(from: self)
     }
     
     @objc private func didTapLogout() {
         authService.logout()
         
-        // Ensure LoginViewController and BaseNavigationController exist
-        let loginVC = LoginViewController()  // Make sure LoginViewController.swift is in your project
-        let nav = BaseNavigationController(rootViewController: loginVC) // Make sure BaseNavigationController.swift is in your project
+        let loginVC = LoginViewController()
+        let nav = BaseNavigationController(rootViewController: loginVC)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
     }
@@ -115,10 +133,7 @@ class SettingsViewController: UIViewController {
     @objc private func didTapDeleteAccount() {
         guard let currentUser = authService.getCurrentUser() else { return }
         
-        // Logout first
         authService.logout()
-        
-        // Delete the user from database
         DatabaseManager.shared.deleteUser(email: currentUser.email)
         
         let lm = LanguageManager.shared
@@ -126,8 +141,8 @@ class SettingsViewController: UIViewController {
                                       message: lm.string(forKey: "account_deleted_message"),
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            let loginVC = LoginViewController()  // Ensure this class exists
-            let nav = BaseNavigationController(rootViewController: loginVC) // Ensure this class exists
+            let loginVC = LoginViewController()
+            let nav = BaseNavigationController(rootViewController: loginVC)
             nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true)
         })
@@ -135,7 +150,14 @@ class SettingsViewController: UIViewController {
     }
     
     @objc private func didTapPrivacy() {
-        let vc = PrivacyViewController() // Ensure PrivacyViewController.swift exists
+        let vc = PrivacyViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    #if DEBUG
+    @objc private func didTapAllUsers() {
+        let vc = AllUsersViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    #endif
 }
