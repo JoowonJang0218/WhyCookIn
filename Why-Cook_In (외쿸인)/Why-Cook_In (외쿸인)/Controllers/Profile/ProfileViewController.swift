@@ -32,12 +32,29 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     private let sexOptions = ["Male", "Female", "Other"]
     
     private let nationalityField = UITextField()
+    private let multipleNationalityLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "I hold multiple nationalities"
+        return lbl
+    }()
+    private let multipleNationalitySwitch = UISwitch()
     private let ethnicityField = UITextField()
+    private let multipleEthnicityLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "I am of mixed ethnicity"
+        return lbl
+    }()
+    private let multipleEthnicitySwitch = UISwitch()
     private let homeCountryField = UITextField()
     private let childhoodCountryField = UITextField()
     private let sexField = UITextField()
+    private var nationalityStack = UIStackView()
+    private var ethnicityStack = UIStackView()
+    private let addNationalityButton = UIButton(type: .system)
+    private let addEthnicityButton = UIButton(type: .system)
+    private var multipleNationalityFields: [UITextField] = []
+    private var multipleEthnicityFields: [UITextField] = []
     
-    // Birthday field
     private let birthdayField: UITextField = {
         let tf = UITextField()
         tf.borderStyle = .roundedRect
@@ -45,8 +62,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         tf.placeholder = "YYYY-MM-DD"
         return tf
     }()
-    
-    // Remove the Add Photo button entirely
     
     private let saveButton: UIButton = {
         let btn = UIButton(type: .system)
@@ -61,12 +76,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.isUserInteractionEnabled = true
-        iv.layer.cornerRadius = 50 // Will update in layout for a circle
         iv.layer.masksToBounds = true
         return iv
     }()
     
-    // A small transparent button or label on top of imageView to indicate editing photo
     private let editPhotoButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Edit Photo", for: .normal)
@@ -104,6 +117,29 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             birthdayField.text = formatter.string(from: profile.birthday)
+            
+            // If multiple arrays have data, turn on switches and add fields
+            if !profile.multipleNationalities.isEmpty {
+                multipleNationalitySwitch.isOn = true
+                for nat in profile.multipleNationalities {
+                    let tf = UITextField()
+                    tf.borderStyle = .roundedRect
+                    tf.text = nat
+                    multipleNationalityFields.append(tf)
+                    nationalityStack.addArrangedSubview(tf)
+                }
+            }
+            
+            if !profile.multipleEthnicities.isEmpty {
+                multipleEthnicitySwitch.isOn = true
+                for eth in profile.multipleEthnicities {
+                    let tf = UITextField()
+                    tf.borderStyle = .roundedRect
+                    tf.text = eth
+                    multipleEthnicityFields.append(tf)
+                    ethnicityStack.addArrangedSubview(tf)
+                }
+            }
         } else {
             visibilitySwitch.isOn = true
         }
@@ -119,6 +155,24 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         view.addSubview(imageView)
         view.addSubview(editPhotoButton)
         view.addSubview(saveButton)
+        view.addSubview(multipleNationalityLabel)
+        view.addSubview(multipleNationalitySwitch)
+        view.addSubview(multipleEthnicityLabel)
+        view.addSubview(multipleEthnicitySwitch)
+        
+        nationalityStack.axis = .vertical
+        nationalityStack.spacing = 5
+        view.addSubview(nationalityStack)
+        
+        ethnicityStack.axis = .vertical
+        ethnicityStack.spacing = 5
+        view.addSubview(ethnicityStack)
+        
+        addNationalityButton.setTitle("Add Another Nationality", for: .normal)
+        addEthnicityButton.setTitle("Add Another Ethnicity", for: .normal)
+        
+        addNationalityButton.addTarget(self, action: #selector(didTapAddNationality), for: .touchUpInside)
+        addEthnicityButton.addTarget(self, action: #selector(didTapAddEthnicity), for: .touchUpInside)
         
         updateText()
     }
@@ -133,12 +187,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.autocapitalizationType = .none
             view.addSubview($0)
         }
-        
-        nationalityField.inputView = UIView()
-        ethnicityField.inputView = UIView()
-        homeCountryField.inputView = UIView()
-        childhoodCountryField.inputView = UIView()
-        sexField.inputView = UIView()
         
         nationalityField.addTarget(self, action: #selector(didTapNationality), for: .editingDidBegin)
         ethnicityField.addTarget(self, action: #selector(didTapEthnicity), for: .editingDidBegin)
@@ -158,7 +206,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         sexField.placeholder = lm.string(forKey: "profile_sex")
         
         saveButton.setTitle(lm.string(forKey: "profile_save"), for: .normal)
-        // "Edit Photo" text is already set, you can localize if you want
     }
     
     override func viewDidLayoutSubviews() {
@@ -173,12 +220,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         visibilitySwitch.frame = CGRect(x: padding, y: y, width: 50, height: 30)
         y += 60
         
-        // Make the image circle: let's pick a size for the image
         let imageSize: CGFloat = 100
         imageView.layer.cornerRadius = imageSize / 2
         imageView.frame = CGRect(x: (view.frame.size.width - imageSize)/2, y: y, width: imageSize, height: imageSize)
         
-        // Position editPhotoButton on top of the imageView
         let editPhotoButtonSize = CGSize(width: 80, height: 24)
         editPhotoButton.frame = CGRect(
             x: imageView.frame.midX - editPhotoButtonSize.width/2,
@@ -208,21 +253,59 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         y += fieldHeight + 20
         
         saveButton.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
-    }
-    
-    @objc private func didTapNationality() {
-        nationalityField.resignFirstResponder()
-        showSelection(list: nationalityList) { [weak self] selected in
-            self?.nationalityField.text = selected
+        y += fieldHeight + 20
+        
+        multipleNationalityLabel.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: 30)
+        y += 40
+        multipleNationalitySwitch.frame = CGRect(x: padding, y: y, width: 50, height: 30)
+        y += 50
+        
+        nationalityStack.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: 0)
+        nationalityStack.layoutIfNeeded()
+        y += nationalityStack.frame.height + 20
+        // Add a button to add more if switch is on
+        if multipleNationalitySwitch.isOn && multipleNationalityFields.count < 5 {
+            // place addNationalityButton
+            addNationalityButton.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
+            y += fieldHeight + 10
+            view.addSubview(addNationalityButton)
+        }
+        
+        multipleEthnicityLabel.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: 30)
+        y += 40
+        multipleEthnicitySwitch.frame = CGRect(x: padding, y: y, width: 50, height: 30)
+        y += 50
+        
+        ethnicityStack.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: 0)
+        ethnicityStack.layoutIfNeeded()
+        y += ethnicityStack.frame.height + 20
+        if multipleEthnicitySwitch.isOn && multipleEthnicityFields.count < 5 {
+            addEthnicityButton.frame = CGRect(x: padding, y: y, width: view.frame.size.width - padding*2, height: fieldHeight)
+            y += fieldHeight + 10
+            view.addSubview(addEthnicityButton)
         }
     }
     
-    @objc private func didTapEthnicity() {
-        ethnicityField.resignFirstResponder()
-        showSelection(list: ethnicityList) { [weak self] selected in
-            self?.ethnicityField.text = selected
-        }
+    @objc private func didTapAddNationality() {
+        guard multipleNationalityFields.count < 5 else { return }
+        let tf = UITextField()
+        tf.borderStyle = .roundedRect
+        tf.placeholder = "Additional nationality"
+        multipleNationalityFields.append(tf)
+        nationalityStack.addArrangedSubview(tf)
+        view.setNeedsLayout()
     }
+    
+    @objc private func didTapAddEthnicity() {
+        guard multipleEthnicityFields.count < 5 else { return }
+        let tf = UITextField()
+        tf.borderStyle = .roundedRect
+        tf.placeholder = "Additional ethnicity"
+        multipleEthnicityFields.append(tf)
+        ethnicityStack.addArrangedSubview(tf)
+        view.setNeedsLayout()
+    }
+    
     
     @objc private func didTapHomeCountry() {
         homeCountryField.resignFirstResponder()
@@ -255,6 +338,20 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             popover.sourceRect = sexField.bounds
         }
         present(alert, animated: true)
+    }
+    
+    @objc private func didTapNationality() {
+        nationalityField.resignFirstResponder()
+        showSelection(list: nationalityList) { [weak self] selected in
+            self?.nationalityField.text = selected
+        }
+    }
+    
+    @objc private func didTapEthnicity() {
+        ethnicityField.resignFirstResponder()
+        showSelection(list: ethnicityList) { [weak self] selected in
+            self?.ethnicityField.text = selected
+        }
     }
     
     @objc private func didTapPhoto() {
@@ -293,19 +390,40 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                       message: "Invalid date format. Use YYYY-MM-DD.")
             return
         }
+        var multipleNationalities: [String] = []
+        var multipleEthnicities: [String] = []
+        if multipleNationalitySwitch.isOn {
+            for field in multipleNationalityFields {
+                if let text = field.text, !text.isEmpty {
+                    multipleNationalities.append(text)
+                }
+            }
+        }
+        if multipleEthnicitySwitch.isOn {
+            for field in multipleEthnicityFields {
+                if let text = field.text, !text.isEmpty {
+                    multipleEthnicities.append(text)
+                }
+            }
+        }
         
+        // currentUser already has firstName, lastName
         DatabaseManager.shared.updateUserProfile(
             user: currentUser,
+            firstName: currentUser.firstName,
+            lastName: currentUser.lastName,
             nationality: nationality,
             birthday: birthday,
             sex: sex,
             ethnicity: ethnicity,
             homeCountry: homeCountry,
             childhoodCountry: childhoodCountry,
-            photo: chosenImage
+            photo: chosenImage,
+            multipleNationalities: multipleNationalities,
+            multipleEthnicities: multipleEthnicities
         )
         
-        DatabaseManager.shared.updateUserVisibility(user: currentUser, visible: visibilitySwitch.isOn)
+        DatabaseManager.shared.setUserVisibility(user: currentUser, visible: visibilitySwitch.isOn)
         
         if isEditingProfile {
             navigationController?.popViewController(animated: true)
@@ -338,3 +456,5 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         present(alert, animated: true)
     }
 }
+
+

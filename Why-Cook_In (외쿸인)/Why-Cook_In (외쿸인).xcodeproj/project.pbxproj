@@ -7,26 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E980E322D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2E2D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift */; };
-		8E980E332D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2F2D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift */; };
-		8E980E342D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2D2D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift */; };
-		8E980E352D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2B2D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift */; };
-		8E980E362D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E312D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift */; };
-		8E980E372D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2A2D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift */; };
-		8E980E382D117E3900B9EC43 /* UserEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E302D117E3900B9EC43 /* UserEntity+CoreDataClass.swift */; };
-		8E980E392D117E3900B9EC43 /* PostEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E980E2C2D117E3900B9EC43 /* PostEntity+CoreDataClass.swift */; };
+		8EC820D12D13495C00AEF1AB /* UserEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820CF2D13495C00AEF1AB /* UserEntity+CoreDataClass.swift */; };
+		8EC820D22D13495C00AEF1AB /* LikeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820C72D13495C00AEF1AB /* LikeEntity+CoreDataClass.swift */; };
+		8EC820D32D13495C00AEF1AB /* ProfileEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820CE2D13495C00AEF1AB /* ProfileEntity+CoreDataProperties.swift */; };
+		8EC820D42D13495C00AEF1AB /* ChatThreadEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820C32D13495C00AEF1AB /* ChatThreadEntity+CoreDataClass.swift */; };
+		8EC820D52D13495C00AEF1AB /* MessageEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820CA2D13495C00AEF1AB /* MessageEntity+CoreDataProperties.swift */; };
+		8EC820D62D13495C00AEF1AB /* PostEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820CB2D13495C00AEF1AB /* PostEntity+CoreDataClass.swift */; };
+		8EC820D72D13495C00AEF1AB /* UserEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820D02D13495C00AEF1AB /* UserEntity+CoreDataProperties.swift */; };
+		8EC820D82D13495C00AEF1AB /* CommentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820C62D13495C00AEF1AB /* CommentEntity+CoreDataProperties.swift */; };
+		8EC820D92D13495C00AEF1AB /* LikeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820C82D13495C00AEF1AB /* LikeEntity+CoreDataProperties.swift */; };
+		8EC820DA2D13495C00AEF1AB /* CommentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820C52D13495C00AEF1AB /* CommentEntity+CoreDataClass.swift */; };
+		8EC820DB2D13495C00AEF1AB /* MessageEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820C92D13495C00AEF1AB /* MessageEntity+CoreDataClass.swift */; };
+		8EC820DC2D13495C00AEF1AB /* PostEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820CC2D13495C00AEF1AB /* PostEntity+CoreDataProperties.swift */; };
+		8EC820DD2D13495C00AEF1AB /* ProfileEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820CD2D13495C00AEF1AB /* ProfileEntity+CoreDataClass.swift */; };
+		8EC820DE2D13495C00AEF1AB /* ChatThreadEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC820C42D13495C00AEF1AB /* ChatThreadEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8E980E2A2D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8E980E2B2D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8E980E2C2D117E3900B9EC43 /* PostEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8E980E2D2D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8E980E2E2D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8E980E2F2D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8E980E302D117E3900B9EC43 /* UserEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8E980E312D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8EC4DA6C2D0AD8D300577C84 /* Why-Cook_In (외쿸인).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Why-Cook_In (외쿸인).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EC820C32D13495C00AEF1AB /* ChatThreadEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EC820C42D13495C00AEF1AB /* ChatThreadEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8EC820C52D13495C00AEF1AB /* CommentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EC820C62D13495C00AEF1AB /* CommentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8EC820C72D13495C00AEF1AB /* LikeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EC820C82D13495C00AEF1AB /* LikeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8EC820C92D13495C00AEF1AB /* MessageEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EC820CA2D13495C00AEF1AB /* MessageEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8EC820CB2D13495C00AEF1AB /* PostEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EC820CC2D13495C00AEF1AB /* PostEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8EC820CD2D13495C00AEF1AB /* ProfileEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EC820CE2D13495C00AEF1AB /* ProfileEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8EC820CF2D13495C00AEF1AB /* UserEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EC820D02D13495C00AEF1AB /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -64,14 +76,20 @@
 		8EC4DA632D0AD8D200577C84 = {
 			isa = PBXGroup;
 			children = (
-				8E980E2A2D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift */,
-				8E980E2B2D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift */,
-				8E980E2C2D117E3900B9EC43 /* PostEntity+CoreDataClass.swift */,
-				8E980E2D2D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift */,
-				8E980E2E2D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift */,
-				8E980E2F2D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift */,
-				8E980E302D117E3900B9EC43 /* UserEntity+CoreDataClass.swift */,
-				8E980E312D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift */,
+				8EC820C32D13495C00AEF1AB /* ChatThreadEntity+CoreDataClass.swift */,
+				8EC820C42D13495C00AEF1AB /* ChatThreadEntity+CoreDataProperties.swift */,
+				8EC820C52D13495C00AEF1AB /* CommentEntity+CoreDataClass.swift */,
+				8EC820C62D13495C00AEF1AB /* CommentEntity+CoreDataProperties.swift */,
+				8EC820C72D13495C00AEF1AB /* LikeEntity+CoreDataClass.swift */,
+				8EC820C82D13495C00AEF1AB /* LikeEntity+CoreDataProperties.swift */,
+				8EC820C92D13495C00AEF1AB /* MessageEntity+CoreDataClass.swift */,
+				8EC820CA2D13495C00AEF1AB /* MessageEntity+CoreDataProperties.swift */,
+				8EC820CB2D13495C00AEF1AB /* PostEntity+CoreDataClass.swift */,
+				8EC820CC2D13495C00AEF1AB /* PostEntity+CoreDataProperties.swift */,
+				8EC820CD2D13495C00AEF1AB /* ProfileEntity+CoreDataClass.swift */,
+				8EC820CE2D13495C00AEF1AB /* ProfileEntity+CoreDataProperties.swift */,
+				8EC820CF2D13495C00AEF1AB /* UserEntity+CoreDataClass.swift */,
+				8EC820D02D13495C00AEF1AB /* UserEntity+CoreDataProperties.swift */,
 				8EC4DA6E2D0AD8D300577C84 /* Why-Cook_In (외쿸인) */,
 				8EC4DA6D2D0AD8D300577C84 /* Products */,
 			);
@@ -159,14 +177,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E980E322D117E3900B9EC43 /* ProfileEntity+CoreDataClass.swift in Sources */,
-				8E980E332D117E3900B9EC43 /* ProfileEntity+CoreDataProperties.swift in Sources */,
-				8E980E342D117E3900B9EC43 /* PostEntity+CoreDataProperties.swift in Sources */,
-				8E980E352D117E3900B9EC43 /* CommentEntity+CoreDataProperties.swift in Sources */,
-				8E980E362D117E3900B9EC43 /* UserEntity+CoreDataProperties.swift in Sources */,
-				8E980E372D117E3900B9EC43 /* CommentEntity+CoreDataClass.swift in Sources */,
-				8E980E382D117E3900B9EC43 /* UserEntity+CoreDataClass.swift in Sources */,
-				8E980E392D117E3900B9EC43 /* PostEntity+CoreDataClass.swift in Sources */,
+				8EC820D12D13495C00AEF1AB /* UserEntity+CoreDataClass.swift in Sources */,
+				8EC820D22D13495C00AEF1AB /* LikeEntity+CoreDataClass.swift in Sources */,
+				8EC820D32D13495C00AEF1AB /* ProfileEntity+CoreDataProperties.swift in Sources */,
+				8EC820D42D13495C00AEF1AB /* ChatThreadEntity+CoreDataClass.swift in Sources */,
+				8EC820D52D13495C00AEF1AB /* MessageEntity+CoreDataProperties.swift in Sources */,
+				8EC820D62D13495C00AEF1AB /* PostEntity+CoreDataClass.swift in Sources */,
+				8EC820D72D13495C00AEF1AB /* UserEntity+CoreDataProperties.swift in Sources */,
+				8EC820D82D13495C00AEF1AB /* CommentEntity+CoreDataProperties.swift in Sources */,
+				8EC820D92D13495C00AEF1AB /* LikeEntity+CoreDataProperties.swift in Sources */,
+				8EC820DA2D13495C00AEF1AB /* CommentEntity+CoreDataClass.swift in Sources */,
+				8EC820DB2D13495C00AEF1AB /* MessageEntity+CoreDataClass.swift in Sources */,
+				8EC820DC2D13495C00AEF1AB /* PostEntity+CoreDataProperties.swift in Sources */,
+				8EC820DD2D13495C00AEF1AB /* ProfileEntity+CoreDataClass.swift in Sources */,
+				8EC820DE2D13495C00AEF1AB /* ChatThreadEntity+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

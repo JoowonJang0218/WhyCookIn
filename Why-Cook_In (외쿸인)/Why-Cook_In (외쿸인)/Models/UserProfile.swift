@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 struct UserProfile {
+    let firstName: String
+    let lastName: String
     let nationality: String
     let birthday: Date
     let sex: String
@@ -17,4 +19,6 @@ struct UserProfile {
     let childhoodCountry: String
     let photo: UIImage?
     let isVisible: Bool
+    let multipleNationalities: [String]
+    let multipleEthnicities: [String]
 }

@@ -66,18 +66,25 @@ class DatabaseManager {
     
     // MARK: - Profile Methods
     func updateUserProfile(user: User,
+                           firstName: String,
+                           lastName: String,
                            nationality: String,
-                           birthday: Date,    // replace age: Int with birthday: Date
+                           birthday: Date,
                            sex: String,
                            ethnicity: String,
                            homeCountry: String,
                            childhoodCountry: String,
-                           photo: UIImage?) {
+                           photo: UIImage?,
+                           multipleNationalities: [String],
+                           multipleEthnicities: [String]) {
         let context = CoreDataManager.shared.context
         let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         request.predicate = NSPredicate(format: "email == %@", user.email)
         
         if let userEntity = try? context.fetch(request).first {
+            userEntity.first_name = firstName
+            userEntity.last_name = lastName
+            
             let profile: ProfileEntity
             if let existingProfile = userEntity.profile {
                 profile = existingProfile
@@ -87,7 +94,7 @@ class DatabaseManager {
             }
             
             profile.nationality = nationality
-            profile.birthday = birthday   // set the birthday date
+            profile.birthday = birthday
             profile.sex = sex
             profile.ethnicity = ethnicity
             profile.homeCountry = homeCountry
@@ -96,9 +103,14 @@ class DatabaseManager {
                 profile.photo = imageData
             }
             
+            // Store multiple arrays as comma-separated strings for simplicity
+            profile.multipleNationalities = multipleNationalities.joined(separator: ",")
+            profile.multipleEthnicities = multipleEthnicities.joined(separator: ",")
+            
             CoreDataManager.shared.saveContext()
         }
     }
+    
     
     func calculateAge(from birthday: Date) -> Int {
         let calendar = Calendar.current
@@ -107,36 +119,33 @@ class DatabaseManager {
         return ageComponents.year ?? 0
     }
     
-    
-    
     func getUserProfile(user: User) -> UserProfile? {
         let context = CoreDataManager.shared.context
         let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         request.predicate = NSPredicate(format: "email == %@", user.email)
         
-        if let userEntity = try? context.fetch(request).first {
-            // Convert UserEntity and associated ProfileEntity to UserProfile
-            guard let profileEntity = userEntity.profile else { return nil }
+        if let userEntity = try? context.fetch(request).first,
+           let pe = userEntity.profile {
+            let image: UIImage? = pe.photo != nil ? UIImage(data: pe.photo!) : nil
             
-            let image: UIImage?
-            if let data = profileEntity.photo {
-                image = UIImage(data: data)
-            } else {
-                image = nil
-            }
+            // Convert comma-separated strings back to arrays
+            let multipleNationalities = pe.multipleNationalities?.split(separator: ",").map { String($0) } ?? []
+            let multipleEthnicities = pe.multipleEthnicities?.split(separator: ",").map { String($0) } ?? []
             
-            let userProfile = UserProfile(
-                nationality: profileEntity.nationality ?? "",
-                birthday: profileEntity.birthday ?? Date(), // Ensure birthday is saved in ProfileEntity
-                sex: profileEntity.sex ?? "",
-                ethnicity: profileEntity.ethnicity ?? "",
-                homeCountry: profileEntity.homeCountry ?? "",
-                childhoodCountry: profileEntity.childhoodCountry ?? "",
+            return UserProfile(
+                firstName: userEntity.first_name ?? "",
+                lastName: userEntity.last_name ?? "",
+                nationality: pe.nationality ?? "",
+                birthday: pe.birthday ?? Date(),
+                sex: pe.sex ?? "",
+                ethnicity: pe.ethnicity ?? "",
+                homeCountry: pe.homeCountry ?? "",
+                childhoodCountry: pe.childhoodCountry ?? "",
                 photo: image,
-                isVisible: userEntity.isVisible
+                isVisible: userEntity.isVisible,
+                multipleNationalities: multipleNationalities,
+                multipleEthnicities: multipleEthnicities
             )
-            
-            return userProfile
         }
         return nil
     }
@@ -341,5 +350,46 @@ class DatabaseManager {
                 print("Failed to save visibility: \(error)")
             }
         }
+    }
+    func fetchOtherUsersProfiles(excluding currentUser: User) -> [UserProfile] {
+        let context = CoreDataManager.shared.context
+        let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+        
+        // Example: fetch all users except current one
+        request.predicate = NSPredicate(format: "email != %@", currentUser.email)
+        
+        guard let userEntities = try? context.fetch(request) else { return [] }
+        
+        var profiles: [UserProfile] = []
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        for ue in userEntities {
+            guard let pe = ue.profile else { continue }
+            
+            let image: UIImage? = pe.photo != nil ? UIImage(data: pe.photo!) : nil
+            let multipleNationalities = pe.multipleNationalities?.split(separator: ",").map { String($0) } ?? []
+            let multipleEthnicities = pe.multipleEthnicities?.split(separator: ",").map { String($0) } ?? []
+            
+            let p = UserProfile(
+                firstName: ue.first_name ?? "",
+                lastName: ue.last_name ?? "",
+                nationality: pe.nationality ?? "",
+                birthday: pe.birthday ?? Date(),
+                sex: pe.sex ?? "",
+                ethnicity: pe.ethnicity ?? "",
+                homeCountry: pe.homeCountry ?? "",
+                childhoodCountry: pe.childhoodCountry ?? "",
+                photo: image,
+                isVisible: ue.isVisible,
+                multipleNationalities: multipleNationalities,
+                multipleEthnicities: multipleEthnicities
+            )
+            
+            if p.isVisible {
+                profiles.append(p)
+            }
+        }   
+        return profiles
     }
 }
