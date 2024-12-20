@@ -89,7 +89,7 @@ class CommunityViewController: UIViewController, UITableViewDataSource, UITableV
         let post = posts[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let reactionCount = DatabaseManager.shared.getReactionsCount(for: post)
-        cell.textLabel?.text = "\(post.author.userID): \(post.title)    Reactions: \(reactionCount)"
+        cell.textLabel?.text = "\(post.title)\n\(post.author.firstName)  Reactions: \(reactionCount)"
         cell.textLabel?.numberOfLines = 0
         cell.accessoryView = nil
         return cell

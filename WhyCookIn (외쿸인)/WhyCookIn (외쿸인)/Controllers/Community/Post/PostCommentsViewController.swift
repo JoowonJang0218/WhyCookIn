@@ -39,7 +39,7 @@ class PostCommentsViewController: UIViewController, UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let c = comments[indexPath.row]
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        cell.textLabel?.text = c.author.userID.uuidString
+        cell.textLabel?.text = c.author.firstName
         cell.detailTextLabel?.text = c.content
         return cell
     }

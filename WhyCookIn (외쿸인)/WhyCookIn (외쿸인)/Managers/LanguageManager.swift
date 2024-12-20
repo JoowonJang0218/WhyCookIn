@@ -113,6 +113,7 @@ class LanguageManager {
         dict["password_requirements"] = "Password must be at least 8 characters, contain a digit."
         dict["missing_required_fields"] = "Please fill in all required fields."
         dict["picture_required"] = "A profile picture is required."
+        dict["already_exists"] = "This account already exists"
         
         // AI bot jokes/examples
         dict["ai_joke_1"] = "AI Bot: Did you know that kimchi is basically spicy, fermented happiness?"
@@ -201,6 +202,7 @@ class LanguageManager {
         dict["password_requirements"] = "비밀번호는 8자 이상이며 숫자를 포함해야 합니다."
         dict["missing_required_fields"] = "필수 항목을 모두 채워주세요."
         dict["picture_required"] = "프로필 사진이 필요합니다."
+        dict["already_exists"] = "이미 존재하는 계정입니다"
         
         // AI bot jokes/examples
         dict["ai_joke_1"] = "AI 봇: 김치는 매콤하고 발효된 행복이란 걸 아시나요?"

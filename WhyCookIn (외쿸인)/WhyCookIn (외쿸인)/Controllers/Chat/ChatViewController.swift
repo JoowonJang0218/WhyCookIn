@@ -1,8 +1,6 @@
 //
 //  ChatViewController.swift
-//  WhyCookIn (외쿸인)
-//
-//  Created by Joowon Jang on 12/20/24.
+//  WhyCookIn (외쿸인)
 //
 
 import Foundation
@@ -11,9 +9,11 @@ import UIKit
 class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     private let chatThread: ChatThreadEntity
-    
-    // Data source for messages
     private var messages: [MessageEntity] = []
+    
+    private var currentUser: User? {
+        return AuthenticationService.shared.getCurrentUser()
+    }
     
     private let tableView: UITableView = {
         let tv = UITableView()
@@ -22,7 +22,6 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return tv
     }()
     
-    // Create a container for input field and send button
     private let inputContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .secondarySystemBackground
@@ -54,25 +53,30 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Chat"
         
+        // Use currentUser to set title if available
+        if let currentUser = currentUser, let otherUser = DatabaseManager.shared.getOtherUser(in: chatThread, currentUser: currentUser) {
+            title = "Chat with \(otherUser.firstName)"
+        } else {
+            title = "Chat"
+        }
+
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
+        tableView.register(MessageCell.self, forCellReuseIdentifier: "MessageCell")
         view.addSubview(tableView)
+        
         view.addSubview(inputContainerView)
         inputContainerView.addSubview(messageTextField)
         inputContainerView.addSubview(sendButton)
-        
+
         messageTextField.delegate = self
         sendButton.addTarget(self, action: #selector(didTapSend), for: .touchUpInside)
-        
-        // Fetch messages from DB
+
         messages = DatabaseManager.shared.fetchMessages(for: chatThread)
         tableView.reloadData()
         scrollToBottom()
@@ -124,30 +128,63 @@ class ChatViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     // MARK: - TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        messages.count
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let msg = messages[indexPath.row]
-        
-        // You may want to customize cell UI:
-        // For simplicity, just show the content
-        cell.textLabel?.text = msg.content
-        cell.textLabel?.numberOfLines = 0
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as? MessageCell else {
+            return UITableViewCell()
+        }
+
+        guard let currentUser = currentUser else {
+            // If no currentUser, just show message as incoming
+            cell.isIncoming = true
+            cell.messageLabel.text = msg.content
+            return cell
+        }
+
+        let isOutgoing = (msg.senderUserID == currentUser.userID)
+        cell.isIncoming = !isOutgoing
+        cell.messageLabel.text = msg.content
+
+        // Fetch otherUser once
+        if let otherUser = DatabaseManager.shared.getOtherUser(in: chatThread, currentUser: currentUser) {
+            // Fetch other user's profile to get the photo
+            if let otherUserProfile = DatabaseManager.shared.getUserProfile(user: otherUser),
+               let userPhoto = otherUserProfile.photo {
+                // If this message is incoming (from otherUser)
+                if !isOutgoing {
+                    cell.profileImage = userPhoto
+                } else {
+                    // If it's outgoing, you might choose not to show a photo or show currentUser's photo if available
+                    cell.profileImage = nil // or your placeholder
+                }
+            } else {
+                // If no photo is found, use a placeholder image
+                if !isOutgoing {
+                    cell.profileImage = UIImage(named: "placeholderImage")
+                } else {
+                    cell.profileImage = nil
+                }
+            }
+        } else {
+            // If we can't fetch the other user, just no image
+            cell.profileImage = nil
+        }
+
         return cell
     }
+
     
     @objc private func didTapSend() {
         guard let text = messageTextField.text, !text.isEmpty else { return }
-        guard let currentUser = AuthenticationService.shared.getCurrentUser() else { return }
+        guard let currentUser = currentUser else { return }
         
-        // Send message through DatabaseManager
         DatabaseManager.shared.sendMessage(in: chatThread, from: currentUser, content: text) { [weak self] success in
             guard let self = self else { return }
             if success {
-                // Refetch messages and reload
                 self.messages = DatabaseManager.shared.fetchMessages(for: self.chatThread)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()

@@ -588,6 +588,7 @@ class DatabaseManager {
             return []
         }
     }
+
     
     /// Given a thread and the currentUser, return the other user in the thread
     func getOtherUser(in thread: ChatThreadEntity, currentUser: User) -> User? {

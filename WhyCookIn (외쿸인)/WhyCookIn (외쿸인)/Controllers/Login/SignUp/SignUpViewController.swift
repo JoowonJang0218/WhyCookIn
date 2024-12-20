@@ -145,6 +145,13 @@ class SignUpViewController: UIViewController {
             return
         }
         
+        if DatabaseManager.shared.fetchUser(email: email) != nil {
+            // Show alert: "This account already exists"
+            showAlert(title: lm.string(forKey: "error_title"),
+                      message: lm.string(forKey: "already_exists"))
+            return
+        }
+        
         // Generate a UUID for the userID since it's a UUID in the model
         let generatedUserID = UUID()
         

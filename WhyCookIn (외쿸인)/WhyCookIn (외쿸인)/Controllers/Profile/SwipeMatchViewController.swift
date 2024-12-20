@@ -117,10 +117,11 @@ class SwipeMatchViewController: UIViewController {
     }
     
     @objc private func didTapChats() {
-        let chatsVC = UIViewController()
+        let chatsVC = ChatsViewController()
         chatsVC.view.backgroundColor = .systemBackground
         chatsVC.title = "Chats"
         navigationController?.pushViewController(chatsVC, animated: true)
+        print("Pushed ChatsViewController")
     }
     
     @objc private func didTapEdit() {
