@@ -1,6 +1,6 @@
 //
-//  CommentEntity+CoreDataProperties.swift
-//  WhyCookIn (외쿸인)
+//  MessageEntity+CoreDataProperties.swift
+//  WhyCookIn
 //
 //  Created by Joowon Jang on 12/19/24.
 //
@@ -10,23 +10,27 @@ import Foundation
 import CoreData
 
 
-extension CommentEntity {
+extension MessageEntity {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CommentEntity> {
-        return NSFetchRequest<CommentEntity>(entityName: "CommentEntity")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<MessageEntity> {
+        return NSFetchRequest<MessageEntity>(entityName: "MessageEntity")
     }
 
     @NSManaged public var content: String?
     @NSManaged public var id: UUID?
+    @NSManaged public var isRead: Bool
+    @NSManaged public var mediaData: Data?
+    @NSManaged public var receiverUserID: UUID?
+    @NSManaged public var senderUserID: UUID?
     @NSManaged public var timestamp: Date?
-    @NSManaged public var author: UserEntity?
+    @NSManaged public var type: String?
+    @NSManaged public var chatThread: ChatThreadEntity?
     @NSManaged public var likes: NSSet?
-    @NSManaged public var post: PostEntity?
 
 }
 
 // MARK: Generated accessors for likes
-extension CommentEntity {
+extension MessageEntity {
 
     @objc(addLikesObject:)
     @NSManaged public func addToLikes(_ value: LikeEntity)
@@ -42,6 +46,6 @@ extension CommentEntity {
 
 }
 
-extension CommentEntity : Identifiable {
+extension MessageEntity : Identifiable {
 
 }

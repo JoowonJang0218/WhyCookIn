@@ -38,26 +38,26 @@
 		8E536EDC2D1487BE00769CD0 /* LikeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8EA27A252D16854400553628 /* ChatThreadEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8EA27A262D16854400553628 /* ChatThreadEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8EC4DA6C2D0AD8D300577C84 /* WhyCookIn (외쿸인).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "WhyCookIn (외쿸인).app"; path = "/Users/joowonjang/Desktop/WhyCookIn/WhyCookIn (외쿸인)/build/Debug-iphoneos/WhyCookIn (외쿸인).app"; sourceTree = "<absolute>"; };
+		8EFA4B522D16C42700262F5B /* WhyCookIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhyCookIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8EC4DA822D0AD8D500577C84 /* Exceptions for "WhyCookIn (외쿸인)" folder in "WhyCookIn (외쿸인)" target */ = {
+		8EFA4B532D16C60700262F5B /* Exceptions for "WhyCookIn" folder in "WhyCookIn" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 8EC4DA6B2D0AD8D300577C84 /* WhyCookIn (외쿸인) */;
+			target = 8EC4DA6B2D0AD8D300577C84 /* WhyCookIn */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8EC4DA6E2D0AD8D300577C84 /* WhyCookIn (외쿸인) */ = {
+		8EC4DA6E2D0AD8D300577C84 /* WhyCookIn */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8EC4DA822D0AD8D500577C84 /* Exceptions for "WhyCookIn (외쿸인)" folder in "WhyCookIn (외쿸인)" target */,
+				8EFA4B532D16C60700262F5B /* Exceptions for "WhyCookIn" folder in "WhyCookIn" target */,
 			);
-			path = "WhyCookIn (외쿸인)";
+			path = WhyCookIn;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -90,16 +90,17 @@
 				8E536ECA2D13F73400769CD0 /* ProfileEntity+CoreDataProperties.swift */,
 				8E536ECB2D13F73400769CD0 /* UserEntity+CoreDataClass.swift */,
 				8E536ECC2D13F73400769CD0 /* UserEntity+CoreDataProperties.swift */,
-				8EC4DA6E2D0AD8D300577C84 /* WhyCookIn (외쿸인) */,
+				8EC4DA6E2D0AD8D300577C84 /* WhyCookIn */,
+				8EFA4B522D16C42700262F5B /* WhyCookIn.app */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8EC4DA6B2D0AD8D300577C84 /* WhyCookIn (외쿸인) */ = {
+		8EC4DA6B2D0AD8D300577C84 /* WhyCookIn */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8EC4DA832D0AD8D500577C84 /* Build configuration list for PBXNativeTarget "WhyCookIn (외쿸인)" */;
+			buildConfigurationList = 8EC4DA832D0AD8D500577C84 /* Build configuration list for PBXNativeTarget "WhyCookIn" */;
 			buildPhases = (
 				8EC4DA682D0AD8D300577C84 /* Sources */,
 				8EC4DA692D0AD8D300577C84 /* Frameworks */,
@@ -110,13 +111,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				8EC4DA6E2D0AD8D300577C84 /* WhyCookIn (외쿸인) */,
+				8EC4DA6E2D0AD8D300577C84 /* WhyCookIn */,
 			);
-			name = "WhyCookIn (외쿸인)";
+			name = WhyCookIn;
 			packageProductDependencies = (
 			);
 			productName = "Why-Cook_In (외쿸인)";
-			productReference = 8EC4DA6C2D0AD8D300577C84 /* WhyCookIn (외쿸인).app */;
+			productReference = 8EFA4B522D16C42700262F5B /* WhyCookIn.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -134,7 +135,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8EC4DA672D0AD8D200577C84 /* Build configuration list for PBXProject "WhyCookIn (외쿸인)" */;
+			buildConfigurationList = 8EC4DA672D0AD8D200577C84 /* Build configuration list for PBXProject "WhyCookIn" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -148,7 +149,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8EC4DA6B2D0AD8D300577C84 /* WhyCookIn (외쿸인) */,
+				8EC4DA6B2D0AD8D300577C84 /* WhyCookIn */,
 			);
 		};
 /* End PBXProject section */
@@ -193,11 +194,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "WhyCookIn (외쿸인)/WhyCookIn___________.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WhyCookIn/WhyCookIn___________.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "WhyCookIn (외쿸인)/Info.plist";
+				INFOPLIST_FILE = WhyCookIn/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -221,11 +222,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "WhyCookIn (외쿸인)/WhyCookIn___________.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "WhyCookIn/WhyCookIn___________.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "WhyCookIn (외쿸인)/Info.plist";
+				INFOPLIST_FILE = WhyCookIn/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -366,7 +367,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8EC4DA672D0AD8D200577C84 /* Build configuration list for PBXProject "WhyCookIn (외쿸인)" */ = {
+		8EC4DA672D0AD8D200577C84 /* Build configuration list for PBXProject "WhyCookIn" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8EC4DA862D0AD8D500577C84 /* Debug */,
@@ -375,7 +376,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8EC4DA832D0AD8D500577C84 /* Build configuration list for PBXNativeTarget "WhyCookIn (외쿸인)" */ = {
+		8EC4DA832D0AD8D500577C84 /* Build configuration list for PBXNativeTarget "WhyCookIn" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8EC4DA842D0AD8D500577C84 /* Debug */,

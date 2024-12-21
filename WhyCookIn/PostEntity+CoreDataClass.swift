@@ -1,6 +1,6 @@
 //
 //  PostEntity+CoreDataClass.swift
-//  WhyCookIn (외쿸인)
+//  WhyCookIn
 //
 //  Created by Joowon Jang on 12/19/24.
 //
