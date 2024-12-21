@@ -87,6 +87,13 @@ class PostDetailViewController: UIViewController, UITableViewDataSource, UITable
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateText), name: NSNotification.Name("LanguageChanged"), object: nil)
         
+        // If current user is the post’s author, show a “Delete Post” button.
+        if let currentUser = AuthenticationService.shared.getCurrentUser(),
+           currentUser.userID == post.author.userID {
+            navigationItem.rightBarButtonItem =
+            UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(didTapDeletePost))
+        }
+        
         titleLabel.text = post.title
         authorLabel.text = post.author.firstName
         contentLabel.text = post.content
@@ -177,6 +184,20 @@ class PostDetailViewController: UIViewController, UITableViewDataSource, UITable
         cell.detailTextLabel?.text = c.content
         cell.detailTextLabel?.numberOfLines = 0
         return cell
+    }
+    
+    @objc private func didTapDeletePost() {
+        let alert = UIAlertController(title: "Delete Post?",
+                                      message: "Are you sure you want to delete this post?",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
+            DatabaseManager.shared.deletePost(self.post)
+            // Then pop or dismiss
+            self.navigationController?.popViewController(animated: true)
+            // Or if you’re using a list, update that list as well
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
     }
     
 }

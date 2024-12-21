@@ -17,15 +17,13 @@
 		8E536ED62D13F73400769CD0 /* MessageEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E536EC62D13F73400769CD0 /* MessageEntity+CoreDataProperties.swift */; };
 		8E536ED72D13F73400769CD0 /* ProfileEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E536EC92D13F73400769CD0 /* ProfileEntity+CoreDataClass.swift */; };
 		8E536ED82D13F73400769CD0 /* PostEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E536EC82D13F73400769CD0 /* PostEntity+CoreDataProperties.swift */; };
-		8E536ED92D13F73400769CD0 /* ChatThreadEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E536EBF2D13F73400769CD0 /* ChatThreadEntity+CoreDataClass.swift */; };
-		8E536EDA2D13F73400769CD0 /* ChatThreadEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E536EC02D13F73400769CD0 /* ChatThreadEntity+CoreDataProperties.swift */; };
 		8E536EDD2D1487BE00769CD0 /* LikeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E536EDB2D1487BE00769CD0 /* LikeEntity+CoreDataClass.swift */; };
 		8E536EDE2D1487BE00769CD0 /* LikeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E536EDC2D1487BE00769CD0 /* LikeEntity+CoreDataProperties.swift */; };
+		8EA27A272D16854400553628 /* ChatThreadEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA27A252D16854400553628 /* ChatThreadEntity+CoreDataClass.swift */; };
+		8EA27A282D16854400553628 /* ChatThreadEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA27A262D16854400553628 /* ChatThreadEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8E536EBF2D13F73400769CD0 /* ChatThreadEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8E536EC02D13F73400769CD0 /* ChatThreadEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8E536EC12D13F73400769CD0 /* CommentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8E536EC22D13F73400769CD0 /* CommentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8E536EC52D13F73400769CD0 /* MessageEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -38,7 +36,9 @@
 		8E536ECC2D13F73400769CD0 /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8E536EDB2D1487BE00769CD0 /* LikeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8E536EDC2D1487BE00769CD0 /* LikeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		8EC4DA6C2D0AD8D300577C84 /* WhyCookIn (외쿸인).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhyCookIn (외쿸인).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EA27A252D16854400553628 /* ChatThreadEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8EA27A262D16854400553628 /* ChatThreadEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8EC4DA6C2D0AD8D300577C84 /* WhyCookIn (외쿸인).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "WhyCookIn (외쿸인).app"; path = "/Users/joowonjang/Desktop/WhyCookIn/WhyCookIn (외쿸인)/build/Debug-iphoneos/WhyCookIn (외쿸인).app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -76,10 +76,10 @@
 		8EC4DA632D0AD8D200577C84 = {
 			isa = PBXGroup;
 			children = (
+				8EA27A252D16854400553628 /* ChatThreadEntity+CoreDataClass.swift */,
+				8EA27A262D16854400553628 /* ChatThreadEntity+CoreDataProperties.swift */,
 				8E536EDB2D1487BE00769CD0 /* LikeEntity+CoreDataClass.swift */,
 				8E536EDC2D1487BE00769CD0 /* LikeEntity+CoreDataProperties.swift */,
-				8E536EBF2D13F73400769CD0 /* ChatThreadEntity+CoreDataClass.swift */,
-				8E536EC02D13F73400769CD0 /* ChatThreadEntity+CoreDataProperties.swift */,
 				8E536EC12D13F73400769CD0 /* CommentEntity+CoreDataClass.swift */,
 				8E536EC22D13F73400769CD0 /* CommentEntity+CoreDataProperties.swift */,
 				8E536EC52D13F73400769CD0 /* MessageEntity+CoreDataClass.swift */,
@@ -91,16 +91,7 @@
 				8E536ECB2D13F73400769CD0 /* UserEntity+CoreDataClass.swift */,
 				8E536ECC2D13F73400769CD0 /* UserEntity+CoreDataProperties.swift */,
 				8EC4DA6E2D0AD8D300577C84 /* WhyCookIn (외쿸인) */,
-				8EC4DA6D2D0AD8D300577C84 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		8EC4DA6D2D0AD8D300577C84 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8EC4DA6C2D0AD8D300577C84 /* WhyCookIn (외쿸인).app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,7 +144,7 @@
 			mainGroup = 8EC4DA632D0AD8D200577C84;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 8EC4DA6D2D0AD8D300577C84 /* Products */;
+			productRefGroup = 8EC4DA632D0AD8D200577C84;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -179,6 +170,8 @@
 			files = (
 				8E536ECD2D13F73400769CD0 /* CommentEntity+CoreDataProperties.swift in Sources */,
 				8E536ECF2D13F73400769CD0 /* ProfileEntity+CoreDataProperties.swift in Sources */,
+				8EA27A272D16854400553628 /* ChatThreadEntity+CoreDataClass.swift in Sources */,
+				8EA27A282D16854400553628 /* ChatThreadEntity+CoreDataProperties.swift in Sources */,
 				8E536ED12D13F73400769CD0 /* CommentEntity+CoreDataClass.swift in Sources */,
 				8E536ED22D13F73400769CD0 /* MessageEntity+CoreDataClass.swift in Sources */,
 				8E536ED32D13F73400769CD0 /* UserEntity+CoreDataProperties.swift in Sources */,
@@ -189,8 +182,6 @@
 				8E536EDD2D1487BE00769CD0 /* LikeEntity+CoreDataClass.swift in Sources */,
 				8E536EDE2D1487BE00769CD0 /* LikeEntity+CoreDataProperties.swift in Sources */,
 				8E536ED82D13F73400769CD0 /* PostEntity+CoreDataProperties.swift in Sources */,
-				8E536ED92D13F73400769CD0 /* ChatThreadEntity+CoreDataClass.swift in Sources */,
-				8E536EDA2D13F73400769CD0 /* ChatThreadEntity+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

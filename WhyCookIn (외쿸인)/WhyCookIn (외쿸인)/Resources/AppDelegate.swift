@@ -9,16 +9,29 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-   
+    
     func application(_ application: UIApplication,
-             didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-            
-            // Apply global UI appearances
-            UIAppearance.applyGlobalStyles()
-            
-            return true
-        }
-
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        UIAppearance.applyGlobalStyles()
+        NotificationManager.shared.requestNotificationAuthorization()
+        return true
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        NotificationManager.shared.updateDeviceToken(deviceToken)
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
+        print("Failed to register for remote notifications: \(error)")
+    }
+    
     // MARK: UISceneSession Lifecycle
     func application(_ application: UIApplication,
                      configurationForConnecting connectingSceneSession: UISceneSession,
@@ -27,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         sceneConfig.delegateClass = SceneDelegate.self
         return sceneConfig
     }
-
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Handle scene session discard if needed
     }

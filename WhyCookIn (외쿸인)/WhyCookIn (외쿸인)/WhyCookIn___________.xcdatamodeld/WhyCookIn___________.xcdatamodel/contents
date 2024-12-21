@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="ChatThreadEntity" representedClassName="ChatThreadEntity" syncable="YES">
+        <attribute name="deletedFor" optional="YES" attributeType="String"/>
+        <attribute name="deleteForBothApproved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="deleteForBothRequestedBy" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="lastMessageTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="userAID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="userBID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MessageEntity" inverseName="chatThread" inverseEntity="MessageEntity"/>

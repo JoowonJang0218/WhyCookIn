@@ -160,7 +160,7 @@ class SwipeMatchViewController: UIViewController {
             // Show the match screen, then navigate to ChatsViewController
             self.showMatchScreen {
                 // Once match screen is dismissed, push ChatsViewController
-                let chatsVC = ChatsViewController()
+                let chatsVC = ChatViewController(chatThread: thread)
                 self.navigationController?.pushViewController(chatsVC, animated: true)
             }
         } else {

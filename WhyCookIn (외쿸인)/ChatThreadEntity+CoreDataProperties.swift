@@ -2,7 +2,7 @@
 //  ChatThreadEntity+CoreDataProperties.swift
 //  WhyCookIn (외쿸인)
 //
-//  Created by Joowon Jang on 12/19/24.
+//  Created by Joowon Jang on 12/21/24.
 //
 //
 
@@ -16,7 +16,11 @@ extension ChatThreadEntity {
         return NSFetchRequest<ChatThreadEntity>(entityName: "ChatThreadEntity")
     }
 
+    @NSManaged public var deletedFor: String?
+    @NSManaged public var deleteForBothApproved: Bool
+    @NSManaged public var deleteForBothRequestedBy: UUID?
     @NSManaged public var id: UUID?
+    @NSManaged public var lastMessageTimestamp: Date?
     @NSManaged public var userAID: UUID?
     @NSManaged public var userBID: UUID?
     @NSManaged public var messages: NSSet?
