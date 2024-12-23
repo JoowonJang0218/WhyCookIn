@@ -7,4 +7,7 @@ target 'WhyCookIn' do
 
   # Pods for WhyCookIn
   pod 'NMapsMap'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
 end

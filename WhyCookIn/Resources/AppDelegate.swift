@@ -7,6 +7,7 @@
 
 import UIKit
 import NMapsMap
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIAppearance.applyGlobalStyles()
         NotificationManager.shared.requestNotificationAuthorization()
         NMFAuthManager.shared().clientId = "4gr3vrh2nb"
+        FirebaseApp.configure()
         return true
     }
     
