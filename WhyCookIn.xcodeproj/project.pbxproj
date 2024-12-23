@@ -1,0 +1,472 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8E74EDD22D19BC6D00EAB53A /* UserEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDD02D19BC6D00EAB53A /* UserEntity+CoreDataClass.swift */; };
+		8E74EDD32D19BC6D00EAB53A /* ChatThreadEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDC42D19BC6D00EAB53A /* ChatThreadEntity+CoreDataClass.swift */; };
+		8E74EDD42D19BC6D00EAB53A /* PostEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDCD2D19BC6D00EAB53A /* PostEntity+CoreDataProperties.swift */; };
+		8E74EDD52D19BC6D00EAB53A /* UserEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDD12D19BC6D00EAB53A /* UserEntity+CoreDataProperties.swift */; };
+		8E74EDD62D19BC6D00EAB53A /* LikeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDC92D19BC6D00EAB53A /* LikeEntity+CoreDataProperties.swift */; };
+		8E74EDD72D19BC6D00EAB53A /* MessageEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDCB2D19BC6D00EAB53A /* MessageEntity+CoreDataProperties.swift */; };
+		8E74EDD82D19BC6D00EAB53A /* ProfileEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDCF2D19BC6D00EAB53A /* ProfileEntity+CoreDataProperties.swift */; };
+		8E74EDD92D19BC6D00EAB53A /* MessageEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDCA2D19BC6D00EAB53A /* MessageEntity+CoreDataClass.swift */; };
+		8E74EDDA2D19BC6D00EAB53A /* ProfileEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDCE2D19BC6D00EAB53A /* ProfileEntity+CoreDataClass.swift */; };
+		8E74EDDB2D19BC6D00EAB53A /* LikeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDC82D19BC6D00EAB53A /* LikeEntity+CoreDataClass.swift */; };
+		8E74EDDC2D19BC6D00EAB53A /* CommentEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDC62D19BC6D00EAB53A /* CommentEntity+CoreDataClass.swift */; };
+		8E74EDDD2D19BC6D00EAB53A /* PostEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDCC2D19BC6D00EAB53A /* PostEntity+CoreDataClass.swift */; };
+		8E74EDDE2D19BC6D00EAB53A /* ChatThreadEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDC52D19BC6D00EAB53A /* ChatThreadEntity+CoreDataProperties.swift */; };
+		8E74EDDF2D19BC6D00EAB53A /* CommentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E74EDC72D19BC6D00EAB53A /* CommentEntity+CoreDataProperties.swift */; };
+		9AABC4ACF42A5266D5227EBB /* Pods_WhyCookIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF417C5D1CD284B9E1F6F580 /* Pods_WhyCookIn.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		82681B8E8A153B6E6841DB4B /* Pods-WhyCookIn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhyCookIn.release.xcconfig"; path = "Target Support Files/Pods-WhyCookIn/Pods-WhyCookIn.release.xcconfig"; sourceTree = "<group>"; };
+		8E74EBE92D19B8B700EAB53A /* WhyCookIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhyCookIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E74EDC42D19BC6D00EAB53A /* ChatThreadEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E74EDC52D19BC6D00EAB53A /* ChatThreadEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatThreadEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E74EDC62D19BC6D00EAB53A /* CommentEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E74EDC72D19BC6D00EAB53A /* CommentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E74EDC82D19BC6D00EAB53A /* LikeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E74EDC92D19BC6D00EAB53A /* LikeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LikeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E74EDCA2D19BC6D00EAB53A /* MessageEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E74EDCB2D19BC6D00EAB53A /* MessageEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E74EDCC2D19BC6D00EAB53A /* PostEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E74EDCD2D19BC6D00EAB53A /* PostEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E74EDCE2D19BC6D00EAB53A /* ProfileEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E74EDCF2D19BC6D00EAB53A /* ProfileEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8E74EDD02D19BC6D00EAB53A /* UserEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8E74EDD12D19BC6D00EAB53A /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		ABF5E6349BE5287414428372 /* Pods-WhyCookIn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhyCookIn.debug.xcconfig"; path = "Target Support Files/Pods-WhyCookIn/Pods-WhyCookIn.debug.xcconfig"; sourceTree = "<group>"; };
+		EF417C5D1CD284B9E1F6F580 /* Pods_WhyCookIn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WhyCookIn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8E74ED2F2D19BB2E00EAB53A /* Exceptions for "WhyCookIn" folder in "WhyCookIn" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				Info.plist,
+			);
+			target = 8E74EBE82D19B8B700EAB53A /* WhyCookIn */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		8E74EBEB2D19B8B700EAB53A /* WhyCookIn */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8E74ED2F2D19BB2E00EAB53A /* Exceptions for "WhyCookIn" folder in "WhyCookIn" target */,
+			);
+			path = WhyCookIn;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8E74EBE62D19B8B700EAB53A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AABC4ACF42A5266D5227EBB /* Pods_WhyCookIn.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6FB21D6DF0A63F2D02AE90D3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EF417C5D1CD284B9E1F6F580 /* Pods_WhyCookIn.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8054E2FFD83E40EA91FED94F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ABF5E6349BE5287414428372 /* Pods-WhyCookIn.debug.xcconfig */,
+				82681B8E8A153B6E6841DB4B /* Pods-WhyCookIn.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		8E74EBE02D19B8B700EAB53A = {
+			isa = PBXGroup;
+			children = (
+				8E74EDC42D19BC6D00EAB53A /* ChatThreadEntity+CoreDataClass.swift */,
+				8E74EDC52D19BC6D00EAB53A /* ChatThreadEntity+CoreDataProperties.swift */,
+				8E74EDC62D19BC6D00EAB53A /* CommentEntity+CoreDataClass.swift */,
+				8E74EDC72D19BC6D00EAB53A /* CommentEntity+CoreDataProperties.swift */,
+				8E74EDC82D19BC6D00EAB53A /* LikeEntity+CoreDataClass.swift */,
+				8E74EDC92D19BC6D00EAB53A /* LikeEntity+CoreDataProperties.swift */,
+				8E74EDCA2D19BC6D00EAB53A /* MessageEntity+CoreDataClass.swift */,
+				8E74EDCB2D19BC6D00EAB53A /* MessageEntity+CoreDataProperties.swift */,
+				8E74EDCC2D19BC6D00EAB53A /* PostEntity+CoreDataClass.swift */,
+				8E74EDCD2D19BC6D00EAB53A /* PostEntity+CoreDataProperties.swift */,
+				8E74EDCE2D19BC6D00EAB53A /* ProfileEntity+CoreDataClass.swift */,
+				8E74EDCF2D19BC6D00EAB53A /* ProfileEntity+CoreDataProperties.swift */,
+				8E74EDD02D19BC6D00EAB53A /* UserEntity+CoreDataClass.swift */,
+				8E74EDD12D19BC6D00EAB53A /* UserEntity+CoreDataProperties.swift */,
+				8E74EBEB2D19B8B700EAB53A /* WhyCookIn */,
+				8E74EBEA2D19B8B700EAB53A /* Products */,
+				8054E2FFD83E40EA91FED94F /* Pods */,
+				6FB21D6DF0A63F2D02AE90D3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8E74EBEA2D19B8B700EAB53A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8E74EBE92D19B8B700EAB53A /* WhyCookIn.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8E74EBE82D19B8B700EAB53A /* WhyCookIn */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8E74EBFC2D19B8B800EAB53A /* Build configuration list for PBXNativeTarget "WhyCookIn" */;
+			buildPhases = (
+				93D8BB952286BE8402796C04 /* [CP] Check Pods Manifest.lock */,
+				8E74EBE52D19B8B700EAB53A /* Sources */,
+				8E74EBE62D19B8B700EAB53A /* Frameworks */,
+				8E74EBE72D19B8B700EAB53A /* Resources */,
+				E0B93BAE68768FA863CAB675 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8E74EBEB2D19B8B700EAB53A /* WhyCookIn */,
+			);
+			name = WhyCookIn;
+			productName = WhyCookIn;
+			productReference = 8E74EBE92D19B8B700EAB53A /* WhyCookIn.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8E74EBE12D19B8B700EAB53A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					8E74EBE82D19B8B700EAB53A = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = 8E74EBE42D19B8B700EAB53A /* Build configuration list for PBXProject "WhyCookIn" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8E74EBE02D19B8B700EAB53A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8E74EBEA2D19B8B700EAB53A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8E74EBE82D19B8B700EAB53A /* WhyCookIn */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8E74EBE72D19B8B700EAB53A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		93D8BB952286BE8402796C04 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WhyCookIn-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0B93BAE68768FA863CAB675 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WhyCookIn/Pods-WhyCookIn-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WhyCookIn/Pods-WhyCookIn-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WhyCookIn/Pods-WhyCookIn-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8E74EBE52D19B8B700EAB53A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E74EDD22D19BC6D00EAB53A /* UserEntity+CoreDataClass.swift in Sources */,
+				8E74EDD32D19BC6D00EAB53A /* ChatThreadEntity+CoreDataClass.swift in Sources */,
+				8E74EDD42D19BC6D00EAB53A /* PostEntity+CoreDataProperties.swift in Sources */,
+				8E74EDD52D19BC6D00EAB53A /* UserEntity+CoreDataProperties.swift in Sources */,
+				8E74EDD62D19BC6D00EAB53A /* LikeEntity+CoreDataProperties.swift in Sources */,
+				8E74EDD72D19BC6D00EAB53A /* MessageEntity+CoreDataProperties.swift in Sources */,
+				8E74EDD82D19BC6D00EAB53A /* ProfileEntity+CoreDataProperties.swift in Sources */,
+				8E74EDD92D19BC6D00EAB53A /* MessageEntity+CoreDataClass.swift in Sources */,
+				8E74EDDA2D19BC6D00EAB53A /* ProfileEntity+CoreDataClass.swift in Sources */,
+				8E74EDDB2D19BC6D00EAB53A /* LikeEntity+CoreDataClass.swift in Sources */,
+				8E74EDDC2D19BC6D00EAB53A /* CommentEntity+CoreDataClass.swift in Sources */,
+				8E74EDDD2D19BC6D00EAB53A /* PostEntity+CoreDataClass.swift in Sources */,
+				8E74EDDE2D19BC6D00EAB53A /* ChatThreadEntity+CoreDataProperties.swift in Sources */,
+				8E74EDDF2D19BC6D00EAB53A /* CommentEntity+CoreDataProperties.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8E74EBFA2D19B8B800EAB53A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = WhyCookIn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8E74EBFB2D19B8B800EAB53A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = WhyCookIn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8E74EBFD2D19B8B800EAB53A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ABF5E6349BE5287414428372 /* Pods-WhyCookIn.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 338C99WF7J;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Joowon-Jang.WhyCookIn-----------";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8E74EBFE2D19B8B800EAB53A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 82681B8E8A153B6E6841DB4B /* Pods-WhyCookIn.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 338C99WF7J;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Joowon-Jang.WhyCookIn-----------";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8E74EBE42D19B8B700EAB53A /* Build configuration list for PBXProject "WhyCookIn" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E74EBFA2D19B8B800EAB53A /* Debug */,
+				8E74EBFB2D19B8B800EAB53A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8E74EBFC2D19B8B800EAB53A /* Build configuration list for PBXNativeTarget "WhyCookIn" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E74EBFD2D19B8B800EAB53A /* Debug */,
+				8E74EBFE2D19B8B800EAB53A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8E74EBE12D19B8B700EAB53A /* Project object */;
+}
